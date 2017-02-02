@@ -21,13 +21,13 @@ var userSchema = new mongoose.Schema({
 userSchema.methods.setPassword = function(password) {
   /* Create a salt then has password with that salt */
   this.salt = crypto.randomBytes(16).toString('hex');
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString(hex);
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
 }
 
 /* Method to compare that passwords */
 userSchema.methods.validPassword = function(password) {
   /* Compare hashes */
-  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString(hex);
+  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
   return this.hash === hash;
 }
 
