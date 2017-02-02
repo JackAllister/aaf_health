@@ -13,6 +13,12 @@ var routerAPI = require('./app_api/routes/index');
 
 var app = express();
 
+var webPort = 3000;
+
+/* Set up our body parser */
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false}));
+
 /* Initialise the passport and let app use */
 app.use(passport.initialize());
 
@@ -34,4 +40,6 @@ app.use(function(req, res, next) {
   }
 });
 
+console.log("Listening on port: " + webPort);
+app.listen(webPort);
 module.exports = app;
