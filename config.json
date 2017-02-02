@@ -1,0 +1,5 @@
+﻿{
+    "connectionString": "mongodb://localhost:27017/aff-health",
+    "apiUrl": "http://localhost:3000/api",
+    "secret": "SECRETFORSECURING"
+}
