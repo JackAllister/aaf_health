@@ -7,8 +7,11 @@ var contProfile = require('../controllers/profile');
 var contAuth = require('../controllers/authentication');
 
 /* Set routers for login/registration */
-router.get('/', contAuth.login);
-router.get('/login', contAuth.login);
+
+//TODO: Fix the / get request
+//router.get('/', contAuth.login);
+
+router.post('/login', contAuth.login);
 router.post('/register', contAuth.register);
 
 module.exports = router;

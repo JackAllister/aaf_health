@@ -12,14 +12,16 @@ passport.use(new LocalStrategy({
 
       /* Return nothing if user not found */
       if (!user) {
+        console.log("Email " + username + " not found");
         return done(null, false, {
-          message: 'User not found'
+          message: 'Email not found'
         });
       }
       /* Check if password is valid */
       if (!user.validPassword(password)) {
+        console.log("Password " + password + " is incorrect");
         return done(null, false, {
-          message: 'Password is wrong'
+          message: 'Password is incorrect'
         });
       }
 

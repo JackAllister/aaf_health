@@ -4,6 +4,11 @@ var User = mongoose.model('User');
 
 module.exports.register = function(req, res) {
 
+  console.log("User registering");
+  console.log("Name: " + req.body.name);
+  console.log("Email: " + req.body.email);
+  console.log("Password: " + req.body.password);
+
   var user = new User();
 
   /* If invalid data sent, send bad request status */
@@ -14,11 +19,6 @@ module.exports.register = function(req, res) {
     });
     return;
   }
-
-  console.log("User registering");
-  console.log("Name: " + req.body.name);
-  console.log("Email: " + req.body.email);
-  console.log("Password: " + req.body.password);
 
   user.name = req.body.name;
   user.email = req.body.email;
@@ -36,9 +36,26 @@ module.exports.register = function(req, res) {
 };
 
 module.exports.login = function(req, res) {
-  console.log("Logging in user: " + req.body.email);
-  res.status(200);
-  res.json({
-    "message" : "User logged in: " + req.body.email
-  });
+
+  passport.authenticate('local', function(err, user, info) {
+
+    /* Handle if passport throws an error */
+    if (err) {
+      res.status(404).json(err);
+      return;
+    }
+
+    if (user) {
+      console.log("User " + user.name + " logged in");
+
+      var token = user.generateJwt();
+      res.status(200);
+      res.json({
+        "token": token
+      });
+    }
+    else {
+      res.status(401).json(info);
+    }
+  })(req, res);
 };
