@@ -22,9 +22,19 @@ app.use(function(req, res, next) {
   next();
 });
 
+/* Conecct to MongoDB */
 mongoose.connect('mongodb://localhost/aaf-health');
 mongoose.connection.once('open', function() {
 
+  /* Add the require models */
+  app.models = require('./models/index');
+
+  /* Load the routes */
+  var routes = require('./routes');
+  _.each(routes, function(controller, route) {
+    app.use(route, controller(app, route));
+  });
+
   console.log('Listening on port 3000...');
   app.listen(SERVER_PORT);
-})
+});
