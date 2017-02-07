@@ -36,6 +36,17 @@ app.use(function(req, res, next) {
   });
 });
 
+app.use(function(err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    console.log("Error 401: " + req.method + " {" + req.url + "}");
+    console.log("Token: ", req.header.authtoken);
+    res.status(401);
+    res.json({
+      "message": err.name + ": " + err.message
+    });
+  }
+});
+
 /* Make our web server listen on specified port */
 console.log("Listening on port: " + webPort);
 app.listen(webPort);
