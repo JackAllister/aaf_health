@@ -11,6 +11,7 @@ var authJWT = jwt({
 });
 
 var contProfile = require('../controllers/profile');
+var contActivity = require('../controllers/activity');
 var contAuth = require('../controllers/authentication');
 
 /* Set routers for login/registration */
@@ -18,10 +19,13 @@ var contAuth = require('../controllers/authentication');
 //TODO: Fix the / get request
 //router.get('/', contAuth.login);
 
-/* Profile viewing */
+/* Profile related routes */
 router.get('/profile', authJWT, contProfile.view);
 
-/* User registration/login */
+/* Activity related routes */
+router.get('/activity', authJWT, contActivity.viewAll);
+
+/* User registration/login routes */
 router.post('/login', contAuth.login);
 router.post('/register', contAuth.register);
 

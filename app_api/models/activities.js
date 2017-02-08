@@ -15,11 +15,11 @@ var activitySchema = new mongoose.Schema({
     type: String,
     unique: false,
     required: true
-  }
+  },
   postedBy:{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }
 });
 
-module.exports = mongoose.model("Activity", activitySchema);
+module.exports = mongoose.model('Activity', activitySchema);
