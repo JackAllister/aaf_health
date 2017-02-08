@@ -9,8 +9,6 @@ module.exports.register = function(req, res) {
   console.log("Email: " + req.body.email);
   console.log("Password: " + req.body.password);
 
-  var user = new User();
-
   /* If invalid data sent, send bad request status */
   if (!req.body.name || !req.body.email || !req.body.password) {
     res.status(400);
@@ -19,6 +17,8 @@ module.exports.register = function(req, res) {
     });
     return;
   }
+
+  var user = new User();
 
   user.name = req.body.name;
   user.email = req.body.email;

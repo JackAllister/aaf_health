@@ -24,6 +24,7 @@ router.get('/profile', authJWT, contProfile.view);
 
 /* Activity related routes */
 router.get('/activity', authJWT, contActivity.viewAll);
+router.post('/activity/add', authJWT, contActivity.addActivity);
 
 /* User registration/login routes */
 router.post('/login', contAuth.login);
