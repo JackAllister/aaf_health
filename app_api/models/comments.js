@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
-var activitySchema = new mongoose.Schema({
-  title: {
+var commentSchema = new mongoose.Schema({
+  comment: {
     type: String,
     unique: false,
     required: true
@@ -11,15 +11,15 @@ var activitySchema = new mongoose.Schema({
     unique: false,
     required: true
   },
-  tripData: {
+  url: {
     type: String,
     unique: false,
-    required: true
+    required: false
   },
-  postedBy:{
+  postedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }
 });
 
-module.exports = mongoose.model('Activity', activitySchema);
+module.exports = mongoose.model('Comment', commentSchema);

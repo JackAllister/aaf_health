@@ -24,7 +24,7 @@ module.exports.addActivity = function(req, res) {
     /* Fill in data and save new activity */
     activity.title = req.body.title;
     activity.tripData = req.body.tripdata;
-    activity.uploadTime = new Date();
+    activity.time = new Date();
     activity.postedBy = req.auth._id;
     activity.save();
 

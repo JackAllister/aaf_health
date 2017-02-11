@@ -14,3 +14,4 @@ mongoose.connection.on('connected', function() {
 /* Add in all required schemas */
 require('./users');
 require('./activities');
+require('./comments');
