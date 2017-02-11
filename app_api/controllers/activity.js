@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 
 var Activity = mongoose.model('Activity');
-var User = mongoose.model('User');
 
 /* Add a new activity */
 module.exports.addActivity = function(req, res) {
@@ -97,10 +96,8 @@ module.exports.removeActivity = function(req, res) {
 
     /* Delete activity from database */
     Activity.findById(req.body.id).exec(function(err, activity) {
-      if ((activity != null) && (err === null))
-      {
-        if (activity.postedBy == req.auth._id)
-        {
+      if ((activity != null) && (err === null)) {
+        if (activity.postedBy == req.auth._id) {
           activity.remove();
           res.status(200);
           res.json({"message": "Activity deleted."});

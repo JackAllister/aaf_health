@@ -18,7 +18,13 @@ var commentSchema = new mongoose.Schema({
   },
   postedBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
+  },
+  activityID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Activity',
+    required: true
   }
 });
 

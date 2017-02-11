@@ -12,6 +12,7 @@ var authJWT = jwt({
 
 var contProfile = require('../controllers/profile');
 var contActivity = require('../controllers/activity');
+var contComment = require('../controllers/comment');
 var contAuth = require('../controllers/authentication');
 
 /* Set routers for login/registration */
@@ -27,6 +28,9 @@ router.get('/activity', authJWT, contActivity.viewAll);
 router.post('/activity/add', authJWT, contActivity.addActivity);
 router.post('/activity/update', authJWT, contActivity.updateActivity);
 router.post('/activity/remove', authJWT, contActivity.removeActivity);
+
+router.get('/comment', authJWT, contComment.viewAll);
+router.post('/comment/add', authJWT, contComment.addComment);
 
 /* User registration/login routes */
 router.post('/login', contAuth.login);
