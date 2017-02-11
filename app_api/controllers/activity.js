@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
+
 var Activity = mongoose.model('Activity');
+var User = mongoose.model('User');
 
 /* Add a new activity */
 module.exports.addActivity = function(req, res) {
@@ -24,13 +26,21 @@ module.exports.addActivity = function(req, res) {
     activity.tripData = req.body.tripdata;
     activity.uploadTime = new Date();
     activity.postedBy = req.auth._id;
+    activity.save();
 
-    /* Save to database */
-    activity.save(function(err) {
-      res.status(200);
-      res.json({"message": "Activity added."});
+    /* Save and add activity ID to array within user activity */
+    User.findById(req.auth._id).exec(function(err, user) {
+      if ((user != null) && (err == null)) {
+        user.activities.push(activity._id);
+        user.save();
+
+        res.status(200);
+        res.json({"message": "Activity added successfully."});
+      } else {
+        res.status(400);
+        res.json({"message": "Unable to add activity."});
+      }
     });
-
   }
 };
 
@@ -52,33 +62,31 @@ module.exports.updateActivity = function(req, res) {
     }
 
     /* Update activity in database */
-    var activity = Activity.findById(req.body.id)
-      .exec(function(err, activity) {
-        if (activity != null)
+    Activity.findById(req.body.id).exec(function(err, activity) {
+      if (activity != null)
+      {
+        if (activity.postedBy == req.auth._id)
         {
-          if (activity.postedBy == req.auth._id)
-          {
-            if ((err === null)) {
-              /* Update activity if found */
-              activity.title = req.body.title;
-              activity.save();
-              res.status(200);
-              res.json({"message": "Activity updated."});
-            } else {
-              /* Indicate error updating activity */
-              res.status(400);
-              res.json({"message": "Error updating activity."});
-            }
+          if ((err === null)) {
+            /* Update activity if found */
+            activity.title = req.body.title;
+            activity.save();
+            res.status(200);
+            res.json({"message": "Activity updated."});
           } else {
+            /* Indicate error updating activity */
             res.status(400);
-            res.json({"message": "Cannot update other users activity."});
+            res.json({"message": "Error updating activity."});
           }
         } else {
           res.status(400);
-          res.json({"message": "Invalid activity ID."});
+          res.json({"message": "Cannot update other users activity."});
         }
-      });
-
+      } else {
+        res.status(400);
+        res.json({"message": "Invalid activity ID."});
+      }
+    });
   }
 };
 
@@ -99,32 +107,41 @@ module.exports.removeActivity = function(req, res) {
     }
 
     /* Delete activity from database */
-    var activity = Activity.findById(req.body.id)
-      .exec(function(err, activity) {
-        if (activity != null)
+    Activity.findById(req.body.id).exec(function(err, activity) {
+      if ((activity != null) && (err === null))
+      {
+        if (activity.postedBy == req.auth._id)
         {
-          if (activity.postedBy == req.auth._id)
-          {
-            if ((err === null)) {
-              /* Remove activity if found */
+          /* Find user as we need to remove from his act array too */
+          User.findById(req.auth._id).exec(function(err, user) {
+            if ((user != null) && (err === null)) {
+
+              /* Find index of activity in users array and splices out */
+              var index = user.activities.indexOf(activity);
+              if (index != -1) {
+                user.activities.splice(index);
+                user.save();
+              }
+              /* Remove activity from its table */
               activity.remove();
               res.status(200);
               res.json({"message": "Activity deleted."});
+
             } else {
               /* Indicate error removing activity */
               res.status(400);
               res.json({"message": "Error removing activity."});
             }
-          } else {
-            res.status(400);
-            res.json({"message": "Cannot delete other users activity."});
-          }
+          });
         } else {
           res.status(400);
-          res.json({"message": "Invalid activity ID."});
+          res.json({"message": "Cannot delete other users activity."});
         }
-      });
-
+      } else {
+        res.status(400);
+        res.json({"message": "Invalid activity ID."});
+      }
+    });
   }
 };
 
