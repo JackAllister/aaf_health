@@ -31,6 +31,8 @@ router.post('/activity/remove', authJWT, contActivity.removeActivity);
 
 router.get('/comment', authJWT, contComment.viewAll);
 router.post('/comment/add', authJWT, contComment.addComment);
+router.post('/comment/update', authJWT, contComment.updateComment);
+router.post('/comment/remove', authJWT, contComment.removeComment);
 
 /* User registration/login routes */
 router.post('/login', contAuth.login);

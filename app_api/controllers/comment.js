@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 
 var Comment = mongoose.model('Comment');
 var Activity = mongoose.model('Activity');
-var User = mongoose.model('User');
 
 module.exports.addComment = function(req, res) {
 
@@ -42,6 +41,88 @@ module.exports.addComment = function(req, res) {
       }
     });
   }
+};
+
+/* Update an existing comment */
+module.exports.updateComment = function(req, res) {
+
+  /* Check to make sure authorized */
+  if (req.auth._id) {
+    console.log("Updating comment");
+    console.log("UserID: " + req.auth._id);
+    console.log("CommentID: " + req.body.id);
+    console.log("Comment: " + req.body.comment);
+    console.log("URL: " + req.body.url);
+
+    if (!req.body.id || !req.body.comment) {
+      res.status(400);
+      res.json({"message": "All fields required."});
+      return;
+    }
+
+    /* Update comment in database */
+    Comment.findById(req.body.id).exec(function(err, comment) {
+      if (comment != null)
+      {
+        if (comment.postedBy == req.auth._id)
+        {
+          if ((err === null)) {
+            /* Update comment if found */
+            comment.comment = req.body.comment;
+            comment.url = req.body.url;
+            comment.save();
+            res.status(200);
+            res.json({"message": "Comment updated."});
+          } else {
+            /* Indicate error updating comment */
+            res.status(400);
+            res.json({"message": "Error updating comment."});
+          }
+        } else {
+          res.status(400);
+          res.json({"message": "Cannot update other users comment."});
+        }
+      } else {
+        res.status(400);
+        res.json({"message": "Invalid comment ID."});
+      }
+    });
+  }
+};
+
+/* Funcion for removing a comment */
+module.exports.removeComment = function(req, res) {
+
+  /* Check to make sure authorized */
+  if (req.auth._id) {
+    console.log("Deleting comment");
+    console.log("UserID: " + req.auth._id);
+    console.log("CommentID:" + req.body.id);
+  }
+
+  /* Check to make sure all data filled in */
+  if (!req.body.id) {
+    res.status(400);
+    res.json({"message": "All fields required."});
+    return;
+  }
+
+  /* Delete comment from database */
+  Comment.findById(req.body.id).exec(function(err, comment) {
+    if ((comment != null) && (err === null)) {
+      if (comment.postedBy == req.auth._id) {
+        comment.remove();
+        res.status(200);
+        res.json({"message": "Comment deleted."});
+      } else {
+        res.status(400);
+        res.json({"message": "Cannot delete other users comment."});
+      }
+    } else {
+      res.status(400);
+      res.json({"message": "Invalid comment ID."});
+    }
+  });
 };
 
 /* Lists all comments */
