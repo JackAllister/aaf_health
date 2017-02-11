@@ -2,9 +2,8 @@ var config = require('../config/config');
 var mongoose = require('mongoose');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
-var Schema = mongoose.Schema;
 
-var userSchema = new Schema({
+var userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
@@ -15,10 +14,7 @@ var userSchema = new Schema({
     required: true
   },
   hash: String,
-  salt: String,
-
-  /* References to activities/comments made */
-  activities: [{type: Schema.Types.ObjectId, ref: "Activity"}]
+  salt: String
 });
 
 /* Method for setting password of user */

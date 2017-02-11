@@ -21,26 +21,15 @@ module.exports.addActivity = function(req, res) {
     }
 
     var activity = new Activity();
-    /* Fill in data for new activity */
+    /* Fill in data and save new activity */
     activity.title = req.body.title;
     activity.tripData = req.body.tripdata;
     activity.uploadTime = new Date();
     activity.postedBy = req.auth._id;
     activity.save();
 
-    /* Save and add activity ID to array within user activity */
-    User.findById(req.auth._id).exec(function(err, user) {
-      if ((user != null) && (err == null)) {
-        user.activities.push(activity._id);
-        user.save();
-
-        res.status(200);
-        res.json({"message": "Activity added successfully."});
-      } else {
-        res.status(400);
-        res.json({"message": "Unable to add activity."});
-      }
-    });
+    res.status(200);
+    res.json({"message": "Activity added."});
   }
 };
 
@@ -112,27 +101,9 @@ module.exports.removeActivity = function(req, res) {
       {
         if (activity.postedBy == req.auth._id)
         {
-          /* Find user as we need to remove from his act array too */
-          User.findById(req.auth._id).exec(function(err, user) {
-            if ((user != null) && (err === null)) {
-
-              /* Find index of activity in users array and splices out */
-              var index = user.activities.indexOf(activity);
-              if (index != -1) {
-                user.activities.splice(index);
-                user.save();
-              }
-              /* Remove activity from its table */
-              activity.remove();
-              res.status(200);
-              res.json({"message": "Activity deleted."});
-
-            } else {
-              /* Indicate error removing activity */
-              res.status(400);
-              res.json({"message": "Error removing activity."});
-            }
-          });
+          activity.remove();
+          res.status(200);
+          res.json({"message": "Activity deleted."});
         } else {
           res.status(400);
           res.json({"message": "Cannot delete other users activity."});
