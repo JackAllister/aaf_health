@@ -1,7 +1,5 @@
 'use strict';
 
-var myip = require('quick-local-ip');
-
 /**
  * @ngdoc overview
  * @name clientApp
@@ -19,8 +17,7 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
-  //.constant('apiURL', 'http://localhost:3000/api')
-  .constant('apiURL', 'http://' + myip.getLocalIP4() + ':3000/api')
+  .constant('apiURL', 'http://localhost:3000/api')
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
