@@ -17,7 +17,7 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
-  .constant('API', 'localhost:3000/api')
+  .constant('apiURL', 'http://localhost:3000/api')
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -33,4 +33,11 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+  })
+  .run(function($http, $cookieStore){
+    if ($cookieStore.get('token')) {
+      /* If a token is stored as a token we can use this */
+      $http.defaults.headers.common.Authorization =
+        'Bearer ' + $cookieStore.get('token');
+    }
   });
