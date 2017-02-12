@@ -24,6 +24,13 @@ app.use(bodyParser.urlencoded({ extended: false}));
 /* Initialise the passport and let app use */
 app.use(passport.initialize());
 
+/* Allow cross origin requests (from our front end) */
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 /* Set up the routing table for API */
 app.use('/api', routerAPI);
 
