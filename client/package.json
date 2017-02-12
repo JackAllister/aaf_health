@@ -39,5 +39,8 @@
   },
   "scripts": {
     "test": "karma start test/karma.conf.js"
+  },
+  "dependencies": {
+    "quick-local-ip": "^1.0.7"
   }
 }
