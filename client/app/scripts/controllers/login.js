@@ -15,19 +15,9 @@ angular.module('clientApp')
       'Karma'
     ];
 
-    function handleRequest(res) {
-      var token = res.data ? res.data.token: null;
-      if (token) {
-        console.log('JWT: ', token);
-      }
-      self.message = res.data.message;
-    }
-
     this.login = function() {
-        this.message = "Login attempt";
+      this.message = this.email;
     }
 
-    self.isAuthed = function() {
-      return auth.isAuthed ? auth.isAuthed(): false
-    }
+
   });
