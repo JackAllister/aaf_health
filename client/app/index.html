@@ -36,11 +36,16 @@
             <a class="navbar-brand" href="#/">client</a>
           </div>
 
-          <div class="collapse navbar-collapse" id="js-navbar-collapse">
+          <div class="collapse navbar-collapse" id="js-navbar-collapse" ng-controller="HeaderCtrl">
 
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#!/">Home</a></li>
-              <li><a ng-href="#!/login">Login</a></li>
+              <li ng-class="{ active: isActive('/')}"><a href="#!/">About</a></li>
+              <li ng-class="{ active: isActive('/login')}"><a ng-href="#!/login" ng-hide="userSignedIn">Login</a></li>
+              <li ng-class="{ active: isActive('/register')}"><a ng-href="#!/register" ng-hide="userSignedIn">Register</a></li>
+
+              <li ng-class="{ active: isActive('/profile')}"><a ng-href="#!/profile" ng-show="userSignedIn">Profile</a></li>
+              <li ng-class="{ active: isActive('/activities')}"><a ng-href="#!/activities" ng-show="userSignedIn">Activities</a></li>
+              <li><a href="#!/logout" ng-show="userSignedIn">Logout</a></li>
             </ul>
           </div>
         </div>
@@ -85,9 +90,10 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/login.js"></script>
         <script src="scripts/services/authentication.js"></script>
+        <script src="scripts/controllers/logout.js"></script>
         <!-- endbuild -->
 </body>
 </html>

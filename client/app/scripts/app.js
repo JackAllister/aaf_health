@@ -21,14 +21,19 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
+        templateUrl: 'views/about.html',
+        controller: 'AboutCtrl',
+        controllerAs: 'about'
       })
       .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'LoginCtrl',
         controllerAs: 'login'
+      })
+      .when('/logout', {
+        templateUrl: 'views/logout.html',
+        controller: 'LogoutCtrl',
+        controllerAs: 'logout'
       })
       .otherwise({
         redirectTo: '/'
@@ -40,4 +45,11 @@ angular
       $http.defaults.headers.common.Authorization =
         'Bearer ' + $cookieStore.get('token');
     }
+  })
+  .controller('HeaderCtrl', function ($scope, $location) {
+    $scope.isActive = function(viewLocation) {
+      console.log(viewLocation);
+      console.log($location.path());
+      return viewLocation === $location.path();
+    };
   });

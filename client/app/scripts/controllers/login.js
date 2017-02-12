@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('LoginCtrl', function ($location, authentication) {
+  .controller('LoginCtrl', function ($rootScope, $location, authentication) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -28,10 +28,9 @@ angular.module('clientApp')
           /* If authentication is success redirect */
           if (isAuthed) {
             $location.path('/');
+            $rootScope.userSignedIn = true;
           }
 
         });
     };
-
-
   });
