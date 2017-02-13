@@ -11,54 +11,38 @@ angular.module('clientApp')
   .factory('authService', function (apiURL, $http, $cookieStore, $rootScope) {
 
     /* Private variables */
-    var loginCallback = null;
 
-    /* Private functions */
-    var successCallback = function(response) {
-
-      if (response.data.token) {
-
-        /* Store the token in a cookie to preserve when page refresh */
-        $cookieStore.put('token', response.data.token);
-
-        /* Add JWT token to auth header */
-        setHeaderFromCookie();
-
-        loginCallback("Login success");
-      }
-    };
-
-    /* This is called when there's incorrect credentials */
-    var errorCallback = function(response) {
-      if (response.data.message) {
-        loginCallback(response.data.message);
-      } else {
-        loginCallback("Error logging in.");
-      }
-    };
-
-    var setHeaderFromCookie = function() {
-      $http.defaults.headers.common.Authorization =
-        'Bearer ' + $cookieStore.get('token');
-      $rootScope.userSignedIn = true;
-    }
-
-    /* Public API */
+    /* Public variables */
     return {
       /* Function for logging in */
       login: function(email, password, callback) {
+        var self = this;
         /* Make sure logged out before trying to log in */
         this.logout();
-
-        /* Set the callback procedure for use on response */
-        loginCallback = callback;
 
         /* Send our POST request with login info */
         $http({
           method: 'POST',
           url: apiURL + '/login',
           data: {email: email, password: password}
-        }).then(successCallback, errorCallback);
+        }).then(function(response) {
+          /* Success */
+          if (response.data.token) {
+            /* Store the token in a cookie to preserve when page refresh */
+            $cookieStore.put('token', response.data.token);
+
+            /* Add JWT token to auth header */
+            self.setHeaderFromCookie();
+            callback("Login success");
+          }
+        }, function(response) {
+          /* Error */
+          if (response.data.message) {
+            callback(response.data.message);
+          } else {
+            callback("Error logging in.");
+          }
+        });
       },
 
       /* Function for logging out */
@@ -81,6 +65,10 @@ angular.module('clientApp')
       },
 
       /* Set the user auth token and global var */
-      setHeaderFromCookie
+      setHeaderFromCookie: function() {
+        $http.defaults.headers.common.Authorization =
+          'Bearer ' + $cookieStore.get('token');
+        $rootScope.userSignedIn = true;
+      }
     };
   });

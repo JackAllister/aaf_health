@@ -9,9 +9,24 @@
  */
 angular.module('clientApp')
   .service('profileService', function (apiURL, $http) {
-    // AngularJS will instantiate a singleton by calling "new" on this function
-    var profileCallback = null;
 
+    /* Private variables */
 
+    /* Public variables */
+    return {
+
+      /* Gets users info using http request */
+      getUserDetails() {
+        $http({
+          method: 'GET',
+          url: apiURL + '/profile',
+        }).then(function() {
+          /* Success */
+        }, function() {
+          /* Error */
+
+        });
+      }
+    }
 
   });
