@@ -1,1 +1,13 @@
-<p>This is the profile view.</p>
+<p>
+  User details.<br>
+  {{profile.message}}<br>
+  Name<br>
+  <input type="text" ng-model="profile.name" placeholder="name"><br>
+
+  Email Address<br>
+  <input type="text" ng-model="profile.email" placeholder="email"><br>
+
+  Password<br>
+  <input type="password" ng-model="profile.password" placeholder="password"><br>
+  <br><button ng-click="profile.update()" autofocus>Update Details</button>
+</p>
