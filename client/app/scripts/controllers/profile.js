@@ -19,7 +19,18 @@ angular.module('clientApp')
 
     /* Function for updating user details via API */
     this.update = function() {
-      //alert('updating');
+      vm.message = 'Updating information';
+
+      if (!vm.name | !vm.email | !vm.password) {
+        vm.message = "All data needs to be filled in.";
+        return;
+      }
+
+      profileService.updateUserDetails(vm.name, vm.email, vm.password,
+        function(data) {
+          /* Callback function for updating details */
+          vm.message = data;
+        });
     };
 
     profileService.getUserDetails(function(result, data) {
@@ -33,7 +44,7 @@ angular.module('clientApp')
         if (data) {
           vm.message = data;
         } else {
-          vm.message = 'Error getting user information';
+          vm.message = 'Error getting user information.';
         }
       }
     });

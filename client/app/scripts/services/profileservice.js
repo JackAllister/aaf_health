@@ -15,10 +15,10 @@ angular.module('clientApp')
     /* Public variables */
     return {
       /* Gets users info using http request */
-      getUserDetails(callback) {
+      getUserDetails: function(callback) {
         $http({
           method: 'GET',
-          url: apiURL + '/profile',
+          url: apiURL + '/profile'
         }).then(function(response) {
           /* Success */
           if (response.data.name && response.data.email)
@@ -28,6 +28,29 @@ angular.module('clientApp')
         }, function(response) {
           /* Error */
           callback(false, response.message);
+        });
+      },
+
+      /* Updates user database via API */
+      updateUserDetails: function(name, email, password, callback) {
+        $http({
+          method: 'POST',
+          url: apiURL + '/profile/update',
+          data: {name: name, email : email, password: password}
+        }).then(function(response) {
+          /* Success */
+          if (response.data.message) {
+            callback(response.data.message);
+          } else {
+            callback('Something went wrong.');
+          }
+        }, function(response) {
+          /* Error */
+          if (response.data && response.data.message) {
+            callback(response.data.message);
+          } else {
+            callback('Error updating user information.');
+          }
         });
       }
     }
