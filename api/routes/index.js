@@ -22,6 +22,7 @@ var contAuth = require('../controllers/authentication');
 
 /* Profile related routes */
 router.get('/profile', authJWT, contProfile.view);
+router.post('/profile/update', authJWT, contProfile.update);
 
 /* Activity related routes */
 router.get('/activity', authJWT, contActivity.viewAll);
