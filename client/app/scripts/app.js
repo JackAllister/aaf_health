@@ -35,21 +35,28 @@ angular
         controller: 'LogoutCtrl',
         controllerAs: 'logout'
       })
+      .when('/profile', {
+        templateUrl: 'views/profile.html',
+        controller: 'ProfileCtrl',
+        controllerAs: 'profile'
+      })
+      .when('/activities', {
+        templateUrl: 'views/activities.html',
+        controller: 'ActivitiesCtrl',
+        controllerAs: 'activities'
+      })
       .otherwise({
         redirectTo: '/'
       });
   })
-  .run(function($http, $cookieStore){
-    if ($cookieStore.get('token')) {
-      /* If a token is stored as a token we can use this */
-      $http.defaults.headers.common.Authorization =
-        'Bearer ' + $cookieStore.get('token');
+  .run(function(authService){
+    /* If user already authed (via cookie) set auth header */
+    if (authService.isAuthed()) {
+      authService.setHeaderFromCookie();
     }
   })
   .controller('HeaderCtrl', function ($scope, $location) {
     $scope.isActive = function(viewLocation) {
-      console.log(viewLocation);
-      console.log($location.path());
       return viewLocation === $location.path();
     };
   });

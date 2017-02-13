@@ -8,16 +8,15 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('LogoutCtrl', function ($rootScope, $location, authentication) {
+  .controller('LogoutCtrl', function ($rootScope, $location, authService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
 
-    /* Log out, set our signed in variable to false then redirect */
-    authentication.logout();
-    $rootScope.userSignedIn = false;
+    /* Log out, then redirect */
+    authService.logout();
     $location.path('/login');
 
   });

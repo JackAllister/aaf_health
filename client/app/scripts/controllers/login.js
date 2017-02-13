@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('LoginCtrl', function ($rootScope, $location, authentication) {
+  .controller('LoginCtrl', function ($rootScope, $location, authService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -16,19 +16,15 @@ angular.module('clientApp')
     ];
     var vm = this;
 
-    /* Make sure logged out before trying to access this page */
-    authentication.logout();
-
+    /* Login function for handling auth request to API */
     this.login = function() {
-      authentication.login(this.email, this.password,
-        function(isAuthed, response) {
-
+      authService.login(this.email, this.password,
+        function(response) {
           vm.message = response;
 
-          /* If authentication is success redirect */
-          if (isAuthed) {
+          /* If authService is success redirect */
+          if (authService.isAuthed()) {
             $location.path('/');
-            $rootScope.userSignedIn = true;
           }
 
         });

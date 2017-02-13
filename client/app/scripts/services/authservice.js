@@ -2,18 +2,19 @@
 
 /**
  * @ngdoc service
- * @name clientApp.authentication
+ * @name clientApp.authService
  * @description
- * # authentication
+ * # authService
  * Factory in the clientApp.
  */
 angular.module('clientApp')
-  .factory('authentication', function (apiURL, $http, $cookieStore) {
-    // Service logic
-    // ...
+  .factory('authService', function (apiURL, $http, $cookieStore, $rootScope) {
+
+    /* Private variables */
     var loginCallback = null;
 
-    function successCallback(response) {
+    /* Private functions */
+    var successCallback = function(response) {
 
       if (response.data.token) {
 
@@ -21,23 +22,28 @@ angular.module('clientApp')
         $cookieStore.put('token', response.data.token);
 
         /* Add JWT token to auth header */
-        $http.defaults.headers.common.Authorization =
-          'Bearer ' + response.data.token;
+        setHeaderFromCookie();
 
-        loginCallback(true, "Login success");
+        loginCallback("Login success");
       }
-    }
+    };
 
     /* This is called when there's incorrect credentials */
-    function errorCallback(response) {
+    var errorCallback = function(response) {
       if (response.data.message) {
-        loginCallback(false, response.data.message);
+        loginCallback(response.data.message);
       } else {
-        loginCallback(false, "Error logging in.");
+        loginCallback("Error logging in.");
       }
+    };
+
+    var setHeaderFromCookie = function() {
+      $http.defaults.headers.common.Authorization =
+        'Bearer ' + $cookieStore.get('token');
+      $rootScope.userSignedIn = true;
     }
 
-    // Public API here
+    /* Public API */
     return {
       /* Function for logging in */
       login: function(email, password, callback) {
@@ -60,6 +66,21 @@ angular.module('clientApp')
         /* Clear authorization header & cookies */
         $cookieStore.remove('token');
         $http.defaults.headers.common.Authorization = '';
-      }
+        $rootScope.userSignedIn = false;
+      },
+
+      /* Function to check user is authorised */
+      isAuthed: function() {
+        if ($cookieStore.get('token')) {
+          $rootScope.userSignedIn = true;
+          return true;
+        } else {
+          $rootScope.userSignedIn = false;
+          return false;
+        }
+      },
+
+      /* Set the user auth token and global var */
+      setHeaderFromCookie
     };
   });
