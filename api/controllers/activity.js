@@ -117,6 +117,7 @@ module.exports.removeActivity = function(req, res) {
 /* Lists all activities */
 module.exports.view = function(req, res) {
 
+  /* Check to make sure authorized */
   if (req.auth._id) {
 
     var searchQuery = {};
@@ -127,7 +128,7 @@ module.exports.view = function(req, res) {
         /* If searching for own activities */
         searchQuery.postedBy = req.auth._id;
       } else {
-        var userIDRegExp = new RegExp('^' + req.query.userID, 'i');
+        searchQuery.postedBy = new RegExp('^' + req.query.userID, 'i');
       }
     }
 
@@ -163,14 +164,6 @@ module.exports.view = function(req, res) {
             "title": activity.title,
             "tripData": activity.tripData,
           };
-
-          User.findById(activity.postedBy)
-            .exec(function(err, user) {
-              if (user != null) {
-                actData.postedByName = user.name;
-              }
-              readyToAdd = true;
-            });
 
           result.push(actData);
         }

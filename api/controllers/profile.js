@@ -5,16 +5,35 @@ module.exports.view = function(req, res) {
 
   /* Check to make sure authorized */
   if (req.auth._id) {
-    /* If a valid ID exists in the JWT */
-    User.findById(req.auth._id)
-      .exec(function(err, user) {
 
-        console.log("Viewed user profile: " + user.email);
-        res.status(200).json({
-          "email": user.email,
-          "name": user.name
+    /* Check to see if searching for self or other ID */
+    if (req.query.userID) {
+      if (req.query.userID == 'me') {
+        var searchID = req.auth._id;
+      } else {
+        var searchID = req.query.userID;
+      }
+
+      /* Search to see if a valid ID exists */
+      User.findById(searchID)
+        .exec(function(err, user) {
+          if (user != null) {
+            console.log("Viewed user profile: " + user.email);
+            res.status(200);
+            res.json({
+              "email": user.email,
+              "name": user.name
+            });
+          } else {
+            res.status(400);
+            res.json({"message": "User not found."});
+          }
         });
-      });
+
+    } else {
+      res.status(400);
+      res.json({"message": "No user ID supplied."});
+    }
   }
 };
 
