@@ -33,6 +33,7 @@ angular.module('clientApp')
         });
     };
 
+    /* Call to get user details */
     profileService.getUserDetails(function(result, data) {
       /* Callback function for filling in data */
       if (result) {
