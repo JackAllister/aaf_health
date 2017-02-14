@@ -45,6 +45,44 @@ angular.module('clientApp')
         });
       },
 
+      /* Function for registering an account */
+      register: function(name, email, password, callback) {
+        var self = this;
+
+        /* Make sure user is not already signed into an account */
+        this.logout();
+
+        /* Send our POST request with register info */
+        $http({
+          method: 'POST',
+          url: apiURL + '/register',
+          data: {name: name, email: email, password: password}
+        }).then(function(response) {
+          /* Success */
+          if (response.data.token) {
+            /* Store the token in a cookie */
+            $cookieStore.put('token', response.data.token);
+
+            self.setHeaderFromCookie();
+            callback('Registration success.');
+          } else {
+            /* Could be error such as email already exists */
+            if (response.data.message) {
+              callback(response.data.message);
+            } else {
+              callback("Error during registration.");
+            }
+          }
+        }, function(response) {
+          /* Error */
+          if (response.data.message) {
+            callback(response.data.message);
+          } else {
+            callback("Error during registration");
+          }
+        });
+      },
+
       /* Function for logging out */
       logout: function() {
         /* Clear authorization header & cookies */

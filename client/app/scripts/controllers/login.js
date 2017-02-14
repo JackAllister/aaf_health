@@ -8,7 +8,7 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('LoginCtrl', function ($rootScope, $location, authService) {
+  .controller('LoginCtrl', function ($location, authService) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
