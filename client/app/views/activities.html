@@ -1,1 +1,23 @@
-<p>This is the activities view.</p>
+<p>
+  <h1 class="text-center">My Activities</h1>
+  <div class="container">
+  	<div class="row">
+      <div class="card col-sm-12 col-md-4 text-center" ng-repeat="act in activities.myActivities">
+        <div class="card-block">
+          <h4 class="card-title">{{act.title}}</h4>
+          <img class="card-img-top" src="images/yeoman.png" alt="Card image cap">
+          <p class="card-text">{{act.data}}</p>
+          <h6 class="card-subtitle mb-2 text-muted">
+            Posted by: {{act.poster}}<br>
+            Date: {{act.time | date:'medium'}}
+          </h6>
+          <button ng-click="activities.comment()" class="btn btn-xs btn-primary pull-center">Comment</button>
+          <button ng-click="activities.update()" class="btn btn-xs btn-warning pull-center">Update</button>
+          <button ng-click="acticities.delete()" class="btn btn-xs btn-danger pull-center">Delete</button>
+          <br><br>
+        </div>
+      </div>
+  	</div>
+  </div>
+
+</p>
