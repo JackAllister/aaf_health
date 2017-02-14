@@ -25,12 +25,12 @@ router.get('/profile', authJWT, contProfile.view);
 router.post('/profile/update', authJWT, contProfile.update);
 
 /* Activity related routes */
-router.get('/activity', authJWT, contActivity.viewAll);
+router.get('/activity', authJWT, contActivity.view);
 router.post('/activity/add', authJWT, contActivity.addActivity);
 router.post('/activity/update', authJWT, contActivity.updateActivity);
 router.post('/activity/remove', authJWT, contActivity.removeActivity);
 
-router.get('/comment', authJWT, contComment.viewAll);
+router.get('/comment', authJWT, contComment.view);
 router.post('/comment/add', authJWT, contComment.addComment);
 router.post('/comment/update', authJWT, contComment.updateComment);
 router.post('/comment/remove', authJWT, contComment.removeComment);

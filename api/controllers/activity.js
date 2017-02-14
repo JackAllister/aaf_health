@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var Activity = mongoose.model('Activity');
+var User = mongoose.model('User');
 
 /* Add a new activity */
 module.exports.addActivity = function(req, res) {
@@ -114,13 +115,68 @@ module.exports.removeActivity = function(req, res) {
 };
 
 /* Lists all activities */
-module.exports.viewAll = function(req, res) {
+module.exports.view = function(req, res) {
 
-  //TODO: Maybe add some logging/tests for when not true?
   if (req.auth._id) {
-    Activity.find({})
-      .exec(function(err, activity) {
-        res.status(200).json(activity);
+
+    var searchQuery = {};
+
+    /* Check to see if searching with userID */
+    if (req.query.userID) {
+      if (req.query.userID == 'me') {
+        /* If searching for own activities */
+        searchQuery.postedBy = req.auth._id;
+      } else {
+        var userIDRegExp = new RegExp('^' + req.query.userID, 'i');
+      }
+    }
+
+    /* Check to see if searching with actID */
+    if (req.query.actID) {
+      searchQuery._id = new RegExp('^' + req.query.actID, 'i');
+    }
+
+    /* Check to see if searching with title */
+    if (req.query.title) {
+      searchQuery.title = new RegExp('^' + req.query.title, 'i');
+    }
+
+    /* Check to see if searching with time */
+    if (req.query.time) {
+      searchQuery.time = new RegExp('^' + req.query.time, 'i');
+    }
+
+    /* Find matching activities using search procedure */
+    Activity.find(searchQuery)
+      .exec(function(err, activities) {
+
+        var result = [];
+
+        /* Loop through and only send needed data */
+        for (activity of activities) {
+
+          /* Fill in our act data information */
+          var actData = {
+            "actID": activity._id,
+            "postedBy": activity.postedBy,
+            "time": activity.time,
+            "title": activity.title,
+            "tripData": activity.tripData,
+          };
+
+          User.findById(activity.postedBy)
+            .exec(function(err, user) {
+              if (user != null) {
+                actData.postedByName = user.name;
+              }
+              readyToAdd = true;
+            });
+
+          result.push(actData);
+        }
+
+        res.status(200);
+        res.json(result);
       });
   }
 };

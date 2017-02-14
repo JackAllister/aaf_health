@@ -8,7 +8,7 @@
  * Service in the clientApp.
  */
 angular.module('clientApp')
-  .service('activitiesService', function () {
+  .service('activitiesService', function (apiURL, $http) {
 
     /* Private variables */
 
@@ -16,18 +16,19 @@ angular.module('clientApp')
     return {
       /* Gets users activities using http request */
       getUserActivities: function(callback) {
-        var debugData = [
-          {"poster": "Jack", "time": new Date(), "title": "Test 1", "data": "testdata1"},
-          {"poster": "Jack", "time": new Date(), "title": "Test 2", "data": "testdata2"},
-          {"poster": "Jack", "time": new Date(), "title": "Test 3", "data": "testdata3"},
-          {"poster": "Jack", "time": new Date(), "title": "Test 1", "data": "testdata1"},
-          {"poster": "Jack", "time": new Date(), "title": "Test 2", "data": "testdata2"},
-          {"poster": "Jack", "time": new Date(), "title": "Test 3", "data": "testdata3"},
-          {"poster": "Jack", "time": new Date(), "title": "Test 1", "data": "testdata1"},
-          {"poster": "Jack", "time": new Date(), "title": "Test 2", "data": "testdata2"},
-          {"poster": "Jack", "time": new Date(), "title": "Test 3", "data": "testdata3"}
-        ];
-        callback(true, debugData);
+        $http({
+          method: 'GET',
+          url: apiURL + '/activity',
+          params: {'userID': 'me'}
+        }).then(function(response) {
+          /* Success */
+          if (response.data) {
+            callback(true, response.data);
+          }
+        }, function(response) {
+          /* Error */
+          callback(false, response.message);
+        });
       }
     }
   });

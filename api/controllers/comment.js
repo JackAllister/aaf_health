@@ -126,7 +126,7 @@ module.exports.removeComment = function(req, res) {
 };
 
 /* Lists all comments */
-module.exports.viewAll = function(req, res) {
+module.exports.view = function(req, res) {
 
   if (req.auth._id) {
     Comment.find({})

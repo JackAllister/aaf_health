@@ -24,6 +24,7 @@ angular.module('clientApp')
       /* Callback function for filling in activities */
       if (result) {
         console.log(data);
+        
         vm.myActivities = data;
       } else {
         /* If response failed to get activities */
