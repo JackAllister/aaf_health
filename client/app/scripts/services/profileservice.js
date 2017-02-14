@@ -14,11 +14,13 @@ angular.module('clientApp')
 
     /* Public variables */
     return {
+
       /* Gets users info using http request */
-      getUserDetails: function(callback) {
+      getUserDetails: function(id, callback) {
         $http({
           method: 'GET',
-          url: apiURL + '/profile'
+          url: apiURL + '/profile',
+          params: {'userID': id}
         }).then(function(response) {
           /* Success */
           if (response.data.name && response.data.email)

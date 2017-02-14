@@ -21,7 +21,7 @@ angular.module('clientApp')
     this.update = function() {
       vm.message = 'Updating information';
 
-      if (!vm.name | !vm.email | !vm.password) {
+      if (!vm.name || !vm.email || !vm.password) {
         vm.message = "All data needs to be filled in.";
         return;
       }
@@ -34,7 +34,7 @@ angular.module('clientApp')
     };
 
     /* Call to get user details */
-    profileService.getUserDetails(function(result, data) {
+    profileService.getUserDetails('me', function(result, data) {
       /* Callback function for filling in data */
       if (result) {
         /* If response from API contains info we set view */

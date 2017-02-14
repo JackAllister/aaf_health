@@ -7,9 +7,9 @@
         <div class="card-block">
           <h4 class="card-title">{{act.title}}</h4>
           <img class="card-img-top" src="images/yeoman.png" alt="Card image cap">
-          <p class="card-text">{{act.data}}</p>
+          <p class="card-text">{{act.tripData}}</p>
           <h6 class="card-subtitle mb-2 text-muted">
-            Posted by: {{act.poster}}<br>
+            Posted by: {{act.posterName}}<br>
             Date: {{act.time | date:'medium'}}
           </h6>
           <button ng-click="activities.comment()" class="btn btn-xs btn-primary pull-center">Comment</button>
