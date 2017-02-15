@@ -44,11 +44,11 @@ angular.module('clientApp')
     }
 
     this.addActivity = function() {
-      $location.path('activities/add');
+      $location.path('/activities/add');
     };
 
     this.updateActivity = function(actID) {
-      $location.path('activities/update').search({"actID": actID});
+      $location.path('/activities/update').search({'actID': actID});
     };
 
     this.deleteActivity = function(actID) {
@@ -63,7 +63,7 @@ angular.module('clientApp')
 
 
     /* Call to get all activities for user */
-    activitiesService.getUserActivities(function(result, data) {
+    activitiesService.getActivities({'userID': 'me'}, function(result, data) {
       /* Callback function for filling in activities */
       if (result) {
         /* Print activity data to screen */

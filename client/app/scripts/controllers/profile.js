@@ -22,7 +22,7 @@ angular.module('clientApp')
       vm.message = 'Updating information';
 
       if (!vm.name || !vm.email || !vm.password) {
-        vm.message = "All data needs to be filled in.";
+        vm.message = 'All data needs to be filled in.';
         return;
       }
 

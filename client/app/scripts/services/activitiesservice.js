@@ -14,12 +14,13 @@ angular.module('clientApp')
 
     /* Public variables */
     return {
-      /* Gets users activities using http request */
-      getUserActivities: function(callback) {
+
+      /* Gets activities using http request, supports search params */
+      getActivities: function(searchParams, callback) {
         $http({
           method: 'GET',
           url: apiURL + '/activity',
-          params: {'userID': 'me'}
+          params: searchParams
         }).then(function(response) {
           /* Success */
           if (response.data) {
@@ -30,7 +31,7 @@ angular.module('clientApp')
           if (response.data && response.data.message) {
             callback(false, response.data.message);
           } else {
-            callback(false, 'Error getting user activities.');
+            callback(false, 'Error getting activities.');
           }
         });
       },
@@ -40,20 +41,20 @@ angular.module('clientApp')
         $http({
           method: 'POST',
           url: apiURL + '/activity/add',
-          data: {"title": title, "tripdata": tripData}
+          data: {'title': title, 'tripdata': tripData}
         }).then(function(response) {
           /* Success */
           if (response.data && response.data.message) {
             callback(true, response.data.message);
           } else {
-            callback(false, "Unable to add activity.");
+            callback(false, 'Unable to add activity.');
           }
         }, function(response) {
           /* Error */
           if (response.data && response.data.message) {
             callback(false, response.data.message);
           } else {
-            callback(false, "Unable to add activity.");
+            callback(false, 'Unable to add activity.');
           }
         });
       },
@@ -69,14 +70,14 @@ angular.module('clientApp')
           if (response.data && response.data.message) {
             callback(true, response.data.message);
           } else {
-            callback(false, "Unable to remove activity.");
+            callback(false, 'Unable to remove activity.');
           }
         }, function(response) {
           /* Error */
           if (response.data && response.data.message) {
             callback(false, response.data.message);
           } else {
-            callback(false, "Unable to remove activity.");
+            callback(false, 'Unable to remove activity.');
           }
         });
       }

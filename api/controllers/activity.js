@@ -134,7 +134,7 @@ module.exports.view = function(req, res) {
 
     /* Check to see if searching with actID */
     if (req.query.actID) {
-      searchQuery._id = new RegExp('^' + req.query.actID, 'i');
+      searchQuery._id = req.query.actID;
     }
 
     /* Check to see if searching with title */

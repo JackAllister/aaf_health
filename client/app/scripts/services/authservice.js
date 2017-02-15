@@ -33,14 +33,14 @@ angular.module('clientApp')
 
             /* Add JWT token to auth header */
             self.setHeaderFromCookie();
-            callback("Login success");
+            callback('Login success');
           }
         }, function(response) {
           /* Error */
           if (response.data.message) {
             callback(response.data.message);
           } else {
-            callback("Error logging in.");
+            callback('Error logging in.');
           }
         });
       },
@@ -56,7 +56,7 @@ angular.module('clientApp')
         $http({
           method: 'POST',
           url: apiURL + '/register',
-          data: {"name": name, "email": email, "password": password}
+          data: {'name': name, 'email': email, 'password': password}
         }).then(function(response) {
           /* Success */
           if (response.data.token) {
@@ -70,7 +70,7 @@ angular.module('clientApp')
             if (response.data.message) {
               callback(response.data.message);
             } else {
-              callback("Error during registration.");
+              callback('Error during registration.');
             }
           }
         }, function(response) {
@@ -78,7 +78,7 @@ angular.module('clientApp')
           if (response.data.message) {
             callback(response.data.message);
           } else {
-            callback("Error during registration");
+            callback('Error during registration');
           }
         });
       },

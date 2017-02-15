@@ -16,7 +16,7 @@ angular.module('clientApp')
     ];
     var vm = this;
 
-    this.addActivity = function() {
+    this.add = function() {
 
       /* Check to see if all fields filled in */
       if (!vm.title || !vm.tripData) {
