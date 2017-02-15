@@ -59,6 +59,29 @@ angular.module('clientApp')
         });
       },
 
+      /* Function to update an activity */
+      updateActivity: function(actID, title, tripData, callback) {
+        $http({
+          method: 'POST',
+          url: apiURL + '/activity/update',
+          data: {id: actID, 'title': title, 'tripdata': tripData}
+        }).then(function(response) {
+          /* Success */
+          if (response.data && response.data.message) {
+            callback(true, response.data.message);
+          } else {
+            callback(false, 'Unable to update activity.');
+          }
+        }, function(response) {
+          /* Error */
+          if (response.data && response.data.message) {
+            callback(false, response.data.message);
+          } else {
+            callback(false, 'Unable to update activity.');
+          }
+        });
+      },
+
       /* Function to remove an activity */
       removeActivity: function(actID, callback) {
         $http({
