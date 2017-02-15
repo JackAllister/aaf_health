@@ -60,6 +60,11 @@ angular
         controller: 'ActivitiesUpdateCtrl',
         controllerAs: 'activitiesUpdate'
       })
+      .when('/comment/add', {
+        templateUrl: 'views/comment/add.html',
+        controller: 'CommentAddCtrl',
+        controllerAs: 'commentAdd'
+      })
       .otherwise({
         redirectTo: '/'
       });

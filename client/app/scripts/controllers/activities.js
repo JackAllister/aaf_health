@@ -41,16 +41,19 @@ angular.module('clientApp')
             }
           }
       });
-    }
+    };
 
+    /* Redirects user to add activity page */
     this.addActivity = function() {
       $location.path('/activities/add');
     };
 
+    /* Redirects user to update activity page */
     this.updateActivity = function(actID) {
       $location.path('/activities/update').search({'actID': actID});
     };
 
+    /* Deletes activity and reloads current view */
     this.deleteActivity = function(actID) {
       activitiesService.removeActivity(actID, function(result, data) {
         if (result) {
@@ -60,6 +63,11 @@ angular.module('clientApp')
         }
       });
     };
+
+    /* Redirects user to add comment page */
+    this.addComment = function(actID) {
+      $location.path('/comment/add').search({'actID': actID});
+    }
 
 
     /* Call to get all activities for user */

@@ -9,19 +9,19 @@ module.exports.addComment = function(req, res) {
   if (req.auth._id) {
     console.log("Adding comment");
     console.log("UserID: " + req.auth._id);
-    console.log("ActID: " + req.body.act_id);
+    console.log("ActID: " + req.body.actID);
     console.log("comment: " + req.body.comment);
     console.log("url: " + req.body.url);
 
     /* Check to make sure all data filled in */
-    if (!req.body.act_id || !req.body.comment) {
+    if (!req.body.actID || !req.body.comment) {
       res.status(400);
       res.json({"message": "All fields required."});
       return;
     }
 
     /* Find activity comment relates to */
-    Activity.findById(req.body.act_id).exec(function(err, activity) {
+    Activity.findById(req.body.actID).exec(function(err, activity) {
       if ((activity != null) && (err === null)) {
 
         /* Create our new comment object */
@@ -30,7 +30,7 @@ module.exports.addComment = function(req, res) {
         comment.time = new Date();
         comment.url = req.body.url;
         comment.postedBy = req.auth._id;
-        comment.activityID = req.body.act_id;
+        comment.activityID = req.body.actID;
         comment.save();
 
         res.status(200);

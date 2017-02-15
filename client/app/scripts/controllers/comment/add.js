@@ -2,35 +2,35 @@
 
 /**
  * @ngdoc function
- * @name clientApp.controller:ActivitiesAddCtrl
+ * @name clientApp.controller:CommentAddCtrl
  * @description
- * # ActivitiesAddCtrl
+ * # CommentAddCtrl
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('ActivitiesAddCtrl', function (activitiesService, $location) {
+  .controller('CommentAddCtrl', function (commentService, $location) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
     var vm = this;
+    var actID = $location.search().actID;
 
     this.add = function() {
 
-      /* Check to see if all fields filled in */
-      if (!vm.title || !vm.tripData) {
-        vm.message = "All data needs to be filled in.";
+      /* Check to see if comment field filled in */
+      if (!vm.comment) {
+        vm.message = 'Cannot post empty comment.';
         return;
       }
 
-      /* Show user activity being added */
-      vm.message = 'Adding activity.';
+      /* Show user comment being added */
+      vm.message = 'Adding comment.';
 
-      /* Add activity using the activities service */
-      activitiesService.addActivity(vm.title, vm.tripData,
+      /* Add comment using comment service */
+      commentService.addComment(actID, vm.comment, vm.url,
         function(result, data) {
-
           if (result) {
             vm.message = data;
             $location.path('/activities');
@@ -38,6 +38,5 @@ angular.module('clientApp')
             vm.message = data;
           }
         });
-    };
-
+    }
   });
