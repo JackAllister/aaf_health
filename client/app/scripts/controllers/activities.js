@@ -43,6 +43,18 @@ angular.module('clientApp')
       });
     }
 
+    this.addActivity = function() {
+      alert('Adding activity');
+    };
+
+    this.updateActivity = function(actID) {
+      alert('Updating activity: ' + actID);
+    };
+
+    this.deleteActivity = function(actID) {
+      alert('Deleting activity: ' + actID);
+    };
+
 
     /* Call to get all activities for user */
     activitiesService.getUserActivities(function(result, data) {
@@ -70,7 +82,7 @@ angular.module('clientApp')
                 });
               } else {
                 activity.comments = [];
-                
+
                 /* Alert user there was failure to get comments */
                 if (data) {
                   vm.message = data;
@@ -82,7 +94,9 @@ angular.module('clientApp')
             });
 
         });
-        console.log(vm.myActivities);
+
+        //TODO: Remove as is just for debug
+        //console.log(vm.myActivities);
 
       } else {
         /* If response failed to get activities */

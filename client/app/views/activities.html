@@ -1,5 +1,7 @@
 <p>
   <h1 class="text-center">My Activities</h1>
+  <button ng-click="activities.addActivity()" class="btn btn-xs btn-primary pull-center">Add Activity</button>
+
   <h4 class="text-center">{{activities.message}}</h4>
   <div class="container">
   	<div class="row">
@@ -12,8 +14,8 @@
             Date: {{act.time | date:'medium'}}<br>
             Posted by: {{act.posterName}}
           </h6>
-          <button ng-click="activities.update()" class="btn btn-xs btn-warning pull-center">Update</button>
-          <button ng-click="acticities.delete()" class="btn btn-xs btn-danger pull-center">Delete</button>
+          <button ng-click="activities.updateActivity(act.actID)" class="btn btn-xs btn-warning pull-center">Update</button>
+          <button ng-click="acticities.deleteActivity(act.actID)" class="btn btn-xs btn-danger pull-center">Delete</button>
           <br><br>
 
           <div ng-repeat="comment in act.comments" class="comment">
