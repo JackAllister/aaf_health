@@ -53,9 +53,33 @@ angular.module('clientApp')
           if (response.data && response.data.message) {
             callback(false, response.data.message);
           } else {
-            callbacl(false, "Unable to add activity.");
+            callback(false, "Unable to add activity.");
+          }
+        });
+      },
+
+      /* Function to remove an activity */
+      removeActivity: function(actID, callback) {
+        $http({
+          method: 'POST',
+          url: apiURL + '/activity/remove',
+          data: {id: actID}
+        }).then(function(response) {
+          /* Success */
+          if (response.data && response.data.message) {
+            callback(true, response.data.message);
+          } else {
+            callback(false, "Unable to remove activity.");
+          }
+        }, function(response) {
+          /* Error */
+          if (response.data && response.data.message) {
+            callback(false, response.data.message);
+          } else {
+            callback(false, "Unable to remove activity.");
           }
         });
       }
+
     };
   });

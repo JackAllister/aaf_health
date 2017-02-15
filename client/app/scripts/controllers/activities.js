@@ -9,7 +9,7 @@
  */
 angular.module('clientApp')
   .controller('ActivitiesCtrl', function (activitiesService,
-  commentService, profileService, $location) {
+  commentService, profileService, $location, $route) {
 
     this.awesomeThings = [
       'HTML5 Boilerplate',
@@ -48,11 +48,17 @@ angular.module('clientApp')
     };
 
     this.updateActivity = function(actID) {
-      $location.path('activities/update?actID=' + actID);
+      $location.path('activities/update').search({"actID": actID});
     };
 
     this.deleteActivity = function(actID) {
-      $location.path('activities/remove?actID=' + actID);
+      activitiesService.removeActivity(actID, function(result, data) {
+        if (result) {
+          $route.reload();
+        } else {
+          vm.message = data;
+        }
+      });
     };
 
 
@@ -64,7 +70,7 @@ angular.module('clientApp')
         vm.myActivities = data;
 
         /* Iterate through each activity in array */
-        vm.myActivities.forEach(function(activity, index) {
+        vm.myActivities.forEach(function(activity) {
 
             /* Fill in names of posters for activities */
             getNameFromPostedBy(activity);
@@ -77,7 +83,7 @@ angular.module('clientApp')
                 activity.comments = data;
 
                 /* Get poster info for each comment */
-                activity.comments.forEach(function(comment, index) {
+                activity.comments.forEach(function(comment) {
                   getNameFromPostedBy(comment);
                 });
               } else {

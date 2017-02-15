@@ -60,11 +60,6 @@ angular
         controller: 'ActivitiesUpdateCtrl',
         controllerAs: 'activitiesUpdate'
       })
-      .when('/activities/remove', {
-        templateUrl: 'views/activities/remove.html',
-        controller: 'ActivitiesRemoveCtrl',
-        controllerAs: 'activitiesRemove'
-      })
       .otherwise({
         redirectTo: '/'
       });
