@@ -50,6 +50,21 @@ angular
         controller: 'RegisterCtrl',
         controllerAs: 'register'
       })
+      .when('/activities/add', {
+        templateUrl: 'views/activities/add.html',
+        controller: 'ActivitiesAddCtrl',
+        controllerAs: 'activitiesAdd'
+      })
+      .when('/activities/update', {
+        templateUrl: 'views/activities/update.html',
+        controller: 'ActivitiesUpdateCtrl',
+        controllerAs: 'activitiesUpdate'
+      })
+      .when('/activities/remove', {
+        templateUrl: 'views/activities/remove.html',
+        controller: 'ActivitiesRemoveCtrl',
+        controllerAs: 'activitiesRemove'
+      })
       .otherwise({
         redirectTo: '/'
       });

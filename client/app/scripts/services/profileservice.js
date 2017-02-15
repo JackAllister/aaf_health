@@ -59,6 +59,6 @@ angular.module('clientApp')
           }
         });
       }
-    }
+    };
 
   });

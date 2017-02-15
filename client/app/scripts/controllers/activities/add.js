@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name clientApp.controller:AddActivityCtrl
+ * @name clientApp.controller:ActivitiesAddCtrl
  * @description
- * # AddActivityCtrl
+ * # ActivitiesAddCtrl
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('AddActivityCtrl', function () {
+  .controller('ActivitiesAddCtrl', function () {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -16,10 +16,11 @@ angular.module('clientApp')
     ];
     var vm = this;
 
-    this.add = function() {
+    this.addActivity = function() {
       if (!vm.title || !vm.tripData) {
         vm.message = "All data needs to be filled in.";
         return;
       }
     };
+
   });

@@ -9,7 +9,7 @@
  */
 angular.module('clientApp')
   .controller('ActivitiesCtrl', function (activitiesService,
-  commentService, profileService) {
+  commentService, profileService, $location) {
 
     this.awesomeThings = [
       'HTML5 Boilerplate',
@@ -21,7 +21,7 @@ angular.module('clientApp')
     this.myActivities = [];
 
     /* Returns the name of the poster from the activity */
-    function getNameFromPostedBy(item, index) {
+    function getNameFromPostedBy(item) {
 
       /* We need to make individual request to get name */
       profileService.getUserDetails(item.postedBy,
@@ -44,15 +44,15 @@ angular.module('clientApp')
     }
 
     this.addActivity = function() {
-      $location.path('#!/add-activity');
+      $location.path('activities/add');
     };
 
     this.updateActivity = function(actID) {
-      $location.path('#!/update-activity');
+      $location.path('activities/update?actID=' + actID);
     };
 
     this.deleteActivity = function(actID) {
-      $location.path('#!/remove-activity');
+      $location.path('activities/remove?actID=' + actID);
     };
 
 
@@ -64,10 +64,10 @@ angular.module('clientApp')
         vm.myActivities = data;
 
         /* Iterate through each activity in array */
-        vm.myActivities.forEach(function(activity, index, actArray) {
+        vm.myActivities.forEach(function(activity, index) {
 
             /* Fill in names of posters for activities */
-            getNameFromPostedBy(activity, index);
+            getNameFromPostedBy(activity);
 
             /* Get comments for activity */
             commentService.getActComments(activity.actID, function(result, data) {
@@ -77,8 +77,8 @@ angular.module('clientApp')
                 activity.comments = data;
 
                 /* Get poster info for each comment */
-                activity.comments.forEach(function(comment, index, actArray) {
-                  getNameFromPostedBy(comment, index);
+                activity.comments.forEach(function(comment, index) {
+                  getNameFromPostedBy(comment);
                 });
               } else {
                 activity.comments = [];
