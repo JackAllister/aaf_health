@@ -25,11 +25,57 @@ module.exports.addActivity = function(req, res) {
     activity.title = req.body.title;
     activity.tripData = req.body.tripdata;
     activity.time = new Date();
+    activity.shared = false;
     activity.postedBy = req.auth._id;
     activity.save();
 
     res.status(200);
     res.json({"message": "Activity added."});
+  }
+};
+
+/* Function for toggling shared activity */
+module.exports.toggleShareActivity = function(req, res) {
+
+  /* Check to make sure authorized */
+  if (req.auth._id) {
+    console.log("Sharing activity");
+    console.log("UserID: " + req.auth._id);
+    console.log("ActID: " + req.body.id);
+
+    /* Check to make sure all data filled in */
+    if (!req.body.id) {
+      res.status(400);
+      res.json({"message": "Activity ID required."});
+      return;
+    }
+
+    Activity.findById(req.body.id).exec(function(err, activity) {
+      if (activity != null)
+      {
+        if (activity.postedBy == req.auth._id)
+        {
+          if ((err === null)) {
+            /* Update activity if found */
+            activity.shared = !activity.shared;
+            activity.save();
+            res.status(200);
+            res.json({"message": "Activity updated."});
+          } else {
+            /* Indicate error updating activity */
+            res.status(400);
+            res.json({"message": "Error updating activity."});
+          }
+        } else {
+          res.status(400);
+          res.json({"message": "Cannot share other users activity."});
+        }
+      } else {
+        res.status(400);
+        res.json({"message": "Invalid activity ID."});
+      }
+    });
+
   }
 };
 
@@ -126,11 +172,14 @@ module.exports.view = function(req, res) {
 
     /* Check to see if searching with userID */
     if (req.query.userID) {
-      if (req.query.userID == 'me') {
+      if (req.query.userID == 'me' || req.query.userID == req.auth._id) {
         /* If searching for own activities */
         searchQuery.postedBy = req.auth._id;
       } else {
         searchQuery.postedBy = new RegExp('^' + req.query.userID, 'i');
+
+        /* If not viewing own activities limit to shared  */
+        searchQuery.shared = true;
       }
     }
 
@@ -166,6 +215,7 @@ module.exports.view = function(req, res) {
               "time": activity.time,
               "title": activity.title,
               "tripData": activity.tripData,
+              "shared": activity.shared
             };
 
             result.push(actData);

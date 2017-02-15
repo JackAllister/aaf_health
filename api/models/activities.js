@@ -16,7 +16,12 @@ var activitySchema = new mongoose.Schema({
     unique: false,
     required: true
   },
-  postedBy:{
+  shared: {
+    type: Boolean,
+    unique: false,
+    required: true
+  },
+  postedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true

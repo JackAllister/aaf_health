@@ -27,6 +27,7 @@ router.post('/profile/update', authJWT, contProfile.update);
 /* Activity related routes */
 router.get('/activity', authJWT, contActivity.view);
 router.post('/activity/add', authJWT, contActivity.addActivity);
+router.post('/activity/share', authJWT, contActivity.toggleShareActivity);
 router.post('/activity/update', authJWT, contActivity.updateActivity);
 router.post('/activity/remove', authJWT, contActivity.removeActivity);
 
