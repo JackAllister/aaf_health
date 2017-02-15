@@ -41,7 +41,7 @@ angular.module('clientApp')
             }
           }
       });
-    };
+    }
 
     /* Redirects user to add activity page */
     this.addActivity = function() {
@@ -67,7 +67,18 @@ angular.module('clientApp')
     /* Redirects user to add comment page */
     this.addComment = function(actID) {
       $location.path('/comment/add').search({'actID': actID});
-    }
+    };
+
+    /* Removes a specified comment */
+    this.deleteComment = function(commentID) {
+      commentService.removeComment(commentID, function(result, data) {
+        if (result) {
+          $route.reload();
+        } else {
+          vm.message = data;
+        }
+      });
+    };
 
 
     /* Call to get all activities for user */

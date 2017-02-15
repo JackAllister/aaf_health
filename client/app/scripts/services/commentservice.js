@@ -57,5 +57,29 @@ angular.module('clientApp')
           }
         });
       },
+
+      /* Function to remove a comment */
+      removeComment: function(comID, callback) {
+        $http({
+          method: 'POST',
+          url: apiURL + '/comment/remove',
+          data: {id: comID}
+        }).then(function(response) {
+          /* Success */
+          if (response.data && response.data.message) {
+            callback(true, response.data.message);
+          } else {
+            callback(false, 'Unable to remove comment.');
+          }
+        }, function(response) {
+          /* Error */
+          if (response.data && response.data.message) {
+            callback(false, response.data.message);
+          } else {
+            callback(false, 'Unable to remove comment.');
+          }
+        });
+      }
+
     };
   });
