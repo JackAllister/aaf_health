@@ -125,13 +125,44 @@ module.exports.removeComment = function(req, res) {
   });
 };
 
-/* Lists all comments */
+/* Lists all comments for activity */
 module.exports.view = function(req, res) {
 
+  /* Check to make sure only authed users can view comments */
   if (req.auth._id) {
-    Comment.find({})
-      .exec(function(err, comment) {
-        res.status(200).json(comment);
-      });
+
+    /* Check to make sure request has activity ID field */
+    if (req.query.actID) {
+
+      var searchQuery = {};
+      searchQuery.activityID = req.query.actID;
+
+      Comment.find(searchQuery)
+        .exec(function(err, comments) {
+
+          var result = [];
+
+          if (comments != null) {
+            /* Loop through and only send needed data */
+            for (comment of comments) {
+              var comData = {
+                "_id": comment._id,
+                "postedBy": comment.postedBy,
+                "time": comment.time,
+                "comment": comment.comment,
+                "url": comment.url
+              };
+
+              result.push(comData);
+            }
+          }
+
+          res.status(200);
+          res.json(result);
+        });
+    } else {
+      res.status(400);
+      res.json({"message": "No activity ID supplied."});
+    }
   }
 };

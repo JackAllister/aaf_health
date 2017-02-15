@@ -153,19 +153,21 @@ module.exports.view = function(req, res) {
 
         var result = [];
 
-        /* Loop through and only send needed data */
-        for (activity of activities) {
+        if (activities != null) {
+          /* Loop through and only send needed data */
+          for (activity of activities) {
 
-          /* Fill in our act data information */
-          var actData = {
-            "actID": activity._id,
-            "postedBy": activity.postedBy,
-            "time": activity.time,
-            "title": activity.title,
-            "tripData": activity.tripData,
-          };
+            /* Fill in our act data information */
+            var actData = {
+              "actID": activity._id,
+              "postedBy": activity.postedBy,
+              "time": activity.time,
+              "title": activity.title,
+              "tripData": activity.tripData,
+            };
 
-          result.push(actData);
+            result.push(actData);
+          }
         }
 
         res.status(200);
