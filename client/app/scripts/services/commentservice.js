@@ -2,24 +2,23 @@
 
 /**
  * @ngdoc service
- * @name clientApp.activitiesService
+ * @name clientApp.commentService
  * @description
- * # activitiesService
+ * # commentService
  * Service in the clientApp.
  */
 angular.module('clientApp')
-  .service('activitiesService', function (apiURL, $http) {
+  .service('commentService', function (apiURL, $http) {
 
     /* Private variables */
 
     /* Public variables */
     return {
-      /* Gets users activities using http request */
-      getUserActivities: function(callback) {
+      getActComments: function(actID, callback) {
         $http({
           method: 'GET',
-          url: apiURL + '/activity',
-          params: {'userID': 'me'}
+          url: apiURL + '/comment',
+          params: {'actID': actID}
         }).then(function(response) {
           /* Success */
           if (response.data) {
@@ -30,7 +29,7 @@ angular.module('clientApp')
           if (response.data && response.data.message) {
             callback(false, response.data.message);
           } else {
-            callback(false, 'Error getting user activities.');
+            callback(false, 'Error getting user comments');
           }
         });
       }

@@ -8,7 +8,9 @@
  * Controller of the clientApp
  */
 angular.module('clientApp')
-  .controller('ActivitiesCtrl', function (activitiesService, profileService) {
+  .controller('ActivitiesCtrl', function (activitiesService,
+  commentService, profileService) {
+
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -56,35 +58,29 @@ angular.module('clientApp')
             getNameFromPostedBy(activity, index);
 
             /* Get comments for activity */
-            var fakeComments = [
-              {
-                "_id": "58a46f98b4f76965cc3b7964",
-                "postedBy": "58a3383f0fe15428095cbfb9",
-                "time": "2017-02-15T15:11:20.287Z",
-                "comment": "test comment 1",
-                "url": "http://google.com"
-              },
-              {
-                "_id": "58a46f98b4f76965cc3b7964",
-                "postedBy": "58a3383f0fe15428095cbfb9",
-                "time": "2017-02-15T15:11:20.287Z",
-                "comment": "test comment 2",
-              },
-              {
-                "_id": "58a46f98b4f76965cc3b7964",
-                "postedBy": "58a3383f0fe15428095cbfb9",
-                "time": "2017-02-15T15:11:20.287Z",
-                "comment": "test comment 3",
-                "url": "http://google.com"
+            commentService.getActComments(activity.actID, function(result, data) {
+
+              /* Check result to see if successful */
+              if (result) {
+                activity.comments = data;
+
+                /* Get poster info for each comment */
+                activity.comments.forEach(function(comment, index, actArray) {
+                  getNameFromPostedBy(comment, index);
+                });
+              } else {
+                activity.comments = [];
+                
+                /* Alert user there was failure to get comments */
+                if (data) {
+                  vm.message = data;
+                } else {
+                  vm.message = 'Error getting activity comments';
+                }
               }
-            ];
 
-            activity.comments = fakeComments;
-
-            /* Get poster info for each comment */
-            activity.comments.forEach(function(comment, index, actArray) {
-              getNameFromPostedBy(comment, index);
             });
+
         });
         console.log(vm.myActivities);
 

@@ -29,7 +29,11 @@ angular.module('clientApp')
           }
         }, function(response) {
           /* Error */
-          callback(false, response.message);
+          if (response.data && response.data.message) {
+            callback(false, response.data.message);
+          } else {
+            callback(false, 'Error getting user information.');
+          }
         });
       },
 
