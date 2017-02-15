@@ -44,15 +44,15 @@ angular.module('clientApp')
     }
 
     this.addActivity = function() {
-      alert('Adding activity');
+      $location.path('#!/add-activity');
     };
 
     this.updateActivity = function(actID) {
-      alert('Updating activity: ' + actID);
+      $location.path('#!/update-activity');
     };
 
     this.deleteActivity = function(actID) {
-      alert('Deleting activity: ' + actID);
+      $location.path('#!/remove-activity');
     };
 
 
