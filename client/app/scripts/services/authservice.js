@@ -56,7 +56,7 @@ angular.module('clientApp')
         $http({
           method: 'POST',
           url: apiURL + '/register',
-          data: {name: name, email: email, password: password}
+          data: {"name": name, "email": email, "password": password}
         }).then(function(response) {
           /* Success */
           if (response.data.token) {
