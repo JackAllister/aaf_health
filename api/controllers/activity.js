@@ -102,10 +102,9 @@ module.exports.updateActivity = function(req, res) {
     console.log("UserID: " + req.auth._id);
     console.log("ActivityID: " + req.body.id);
     console.log("Title: " + req.body.title);
-    console.log("Trip Data: " + req.body.tripdata);
 
     /* Check to make sure all data filled in */
-    if (!req.body.title || !req.body.id || !req.body.tripdata) {
+    if (!req.body.title || !req.body.id) {
       res.status(400);
       res.json({"message": "All fields required."});
       return;
@@ -120,7 +119,6 @@ module.exports.updateActivity = function(req, res) {
           if ((err === null)) {
             /* Update activity if found */
             activity.title = req.body.title;
-            activity.tripData = req.body.tripdata;
             activity.save();
             res.status(200);
             res.json({"message": "Activity updated."});
@@ -247,7 +245,7 @@ module.exports.view = function(req, res) {
               "postedBy": activity.postedBy,
               "time": activity.time,
               "title": activity.title,
-              "tripData": activity.tripData,
+              "tripData": activity.geoJSON,
               "shared": activity.shared
             };
 

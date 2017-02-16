@@ -34,7 +34,8 @@ angular.module('clientApp')
     }
 
     /* Fill the view with current activity information */
-    activitiesService.getActivities({'actID': actID}, function(result, data) {
+    activitiesService.getActivities({'userID': 'me', 'actID': actID},
+    function(result, data) {
       if (result) {
 
         if (data.length == 1) {
@@ -45,7 +46,7 @@ angular.module('clientApp')
         } else {
           vm.message = 'Server returned more than one activity';
         }
-        
+
       } else {
         if (data) {
           vm.message = data;
