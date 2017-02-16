@@ -9,7 +9,7 @@
  */
 angular.module('clientApp')
   .controller('ActivitiesCtrl', function (activitiesService,
-  commentService, profileService, $location, $route, $scope) {
+  commentService, profileService, leafletData, $location, $route, $scope) {
 
     this.awesomeThings = [
       'HTML5 Boilerplate',
@@ -52,12 +52,45 @@ angular.module('clientApp')
 
               /* Set up leaflet map */
               angular.extend($scope, {
-                  center: {
-                      lat: 51.505,
-                      lng: -0.09,
-                      zoom: 8
-                  }
+                center: {
+                    lat: 51.505,
+                    lng: -0.09,
+                    zoom: 8
+                },
+                defaults: {
+                    tileLayer: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
+                    maxZoom: 14,
+                    path: {
+                        weight: 10,
+                        color: '#800000',
+                        opacity: 1
+                    }
+                }
               });
+
+              leafletData.getMap('map-' + activity.actID)
+              .then(function(map) {
+                /* WHAT THE FUCK DO I DO HERE */
+                console.log(map);
+                console.log(L);
+                L.GeoJSON(activity.tripData).add(map);
+              });
+
+              // var valName = activity.actID;
+              // console.log(valName);
+              // angular.extend($scope, {
+              //     valName: {
+              //         data: activity.tripData,
+              //         style: {
+              //             fillColor: "green",
+              //             weight: 2,
+              //             opacity: 1,
+              //             color: 'white',
+              //             dashArray: '3',
+              //             fillOpacity: 0.7
+              //         }
+              //     }
+              // });
 
               /* Fill in names of posters for activities */
               getNameFromPostedBy(activity);
