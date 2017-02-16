@@ -15,6 +15,8 @@
           <h4 class="card-title">{{act.title}}</h4>
           <img class="card-img-top" src="images/yeoman.png" alt="Card image cap">
           <p class="card-text">{{act.tripData}}</p>
+
+          <leaflet id="map-{{act.actID}}" lf-center="center" height="480px" width="640px"></leaflet>
           <h6 class="card-subtitle mb-2 text-muted">
             Date: {{act.time | date:'medium'}}<br>
             Posted by: {{act.posterName}}

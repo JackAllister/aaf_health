@@ -9,7 +9,7 @@
  */
 angular.module('clientApp')
   .controller('ActivitiesCtrl', function (activitiesService,
-  commentService, profileService, $location, $route) {
+  commentService, profileService, $location, $route, $scope) {
 
     this.awesomeThings = [
       'HTML5 Boilerplate',
@@ -49,6 +49,15 @@ angular.module('clientApp')
         if (result) {
           /* Iterate through each activity in array */
           data.forEach(function(activity) {
+
+              /* Set up leaflet map */
+              angular.extend($scope, {
+                  center: {
+                      lat: 51.505,
+                      lng: -0.09,
+                      zoom: 8
+                  }
+              });
 
               /* Fill in names of posters for activities */
               getNameFromPostedBy(activity);

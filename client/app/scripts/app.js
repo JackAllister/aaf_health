@@ -15,7 +15,8 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'leaflet-directive'
   ])
   .constant('apiURL', 'http://localhost:3000/api')
   .config(function ($routeProvider) {
