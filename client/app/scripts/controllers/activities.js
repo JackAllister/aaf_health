@@ -53,6 +53,16 @@ angular.module('clientApp')
       $location.path('/activities/update').search({'actID': actID});
     };
 
+    this.shareActivity = function(actID) {
+      activitiesService.toggleShareActivity(actID, function(result, data) {
+        if (result) {
+          $route.reload();
+        } else {
+          vm.message = data;
+        }
+      });
+    }
+
     /* Deletes activity and reloads current view */
     this.deleteActivity = function(actID) {
       activitiesService.removeActivity(actID, function(result, data) {

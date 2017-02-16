@@ -19,6 +19,14 @@
             Date: {{act.time | date:'medium'}}<br>
             Posted by: {{act.posterName}}
           </h6>
+          <button ng-click="activities.shareActivity(act.actID)" ng-hide="act.shared" class="btn btn-xs btn-success pull-center">
+            <span class="glyphicon glyphicon-share"></span>
+            Share
+          </button>
+          <button ng-click="activities.shareActivity(act.actID)" ng-show="act.shared" class="btn btn-xs btn-success pull-center">
+            <span class="glyphicon glyphicon-share"></span>
+            Make Private
+          </button>
           <button ng-click="activities.updateActivity(act.actID)" class="btn btn-xs btn-warning pull-center">
             <span class="glyphicon glyphicon-edit"></span>
             Update
