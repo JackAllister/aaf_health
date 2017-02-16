@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var config = require('../config/config');
 
 mongoose.connect(config.dbURI);
+mongoose.Promise = global.Promise
 
 /* Some debugging to indicate when database connected */
 mongoose.connection.on('connected', function() {
