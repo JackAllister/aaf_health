@@ -34,6 +34,7 @@
     "request": "^2.79.0",
     "rewire": "^2.5.2",
     "togeojson": "^0.16.0",
+    "validator": "^6.2.1",
     "xmldom": "^0.1.27"
   }
 }
