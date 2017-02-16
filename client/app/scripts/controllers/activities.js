@@ -9,7 +9,7 @@
  */
 angular.module('clientApp')
   .controller('ActivitiesCtrl', function (activitiesService,
-  commentService, profileService, leafletData, $location, $route, $scope) {
+  commentService, profileService, leafletData, $location, $route) {
 
     this.awesomeThings = [
       'HTML5 Boilerplate',
@@ -49,48 +49,6 @@ angular.module('clientApp')
         if (result) {
           /* Iterate through each activity in array */
           data.forEach(function(activity) {
-
-              /* Set up leaflet map */
-              angular.extend($scope, {
-                center: {
-                    lat: 51.505,
-                    lng: -0.09,
-                    zoom: 8
-                },
-                defaults: {
-                    tileLayer: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
-                    maxZoom: 14,
-                    path: {
-                        weight: 10,
-                        color: '#800000',
-                        opacity: 1
-                    }
-                }
-              });
-
-              leafletData.getMap('map-' + activity.actID)
-              .then(function(map) {
-                /* WHAT THE FUCK DO I DO HERE */
-                console.log(map);
-                console.log(L);
-                L.GeoJSON(activity.tripData).add(map);
-              });
-
-              // var valName = activity.actID;
-              // console.log(valName);
-              // angular.extend($scope, {
-              //     valName: {
-              //         data: activity.tripData,
-              //         style: {
-              //             fillColor: "green",
-              //             weight: 2,
-              //             opacity: 1,
-              //             color: 'white',
-              //             dashArray: '3',
-              //             fillOpacity: 0.7
-              //         }
-              //     }
-              // });
 
               /* Fill in names of posters for activities */
               getNameFromPostedBy(activity);
@@ -216,6 +174,38 @@ angular.module('clientApp')
           vm.message = data;
         }
       });
+    };
+
+    /* Function for resetting search parameters */
+    this.resetSearch = function() {
+      vm.searchTitle = '';
+
+      /* Load users own activities */
+      loadActivities({userID: 'me'}, false);
+
+      /* Load all shared and append */
+      loadActivities({shared: true}, true);
+    };
+
+    /* Function callback for search functionality */
+    this.searchActivities = function() {
+
+      var searchQuery = {};
+
+      /* Set up our search query */
+      searchQuery.title = vm.searchTitle;
+
+      /* Check own activities */
+      var searchSelfQuery = {};
+      Object.assign(searchSelfQuery, searchQuery);
+      searchSelfQuery.userID = 'me';
+      loadActivities(searchSelfQuery, false);
+
+      /* Check shared activities */
+      var searchSharedQuery = {};
+      Object.assign(searchSharedQuery, searchQuery);
+      searchSharedQuery.shared = true;
+      loadActivities(searchSharedQuery, true);
     };
 
     /*
