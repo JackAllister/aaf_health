@@ -1,9 +1,11 @@
+var rewire = require('rewire');
+
 var chai = require("chai");
 var expect = chai.expect;
 var should = chai.should();
 
 require('../models/db');
-var activity = require("../controllers/activity");
+var activity = rewire("../controllers/activity");
 
 
 /* Unit tests for activity controller */
@@ -37,5 +39,23 @@ describe("Activity Controller", function() {
 
       expect(activity.view(req, res)).to.be.true;
     });
+
+
+    it("Search Parser with no search params", function() {
+      var req = {
+        query: {
+
+        }
+      };
+
+      /* Having to use rewire to access private function */
+      var privParseSearchTerms = activity.__get__('parseSearchTerms');
+
+      /* If no params we only want to return shared activities */
+      var expected = {shared: true};
+
+      expect(privParseSearchTerms(req)).to.eql(expected);
+    });
+
   });
 });

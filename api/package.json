@@ -32,6 +32,7 @@
     "passport": "^0.2.2",
     "passport-local": "^1.0.0",
     "request": "^2.79.0",
+    "rewire": "^2.5.2",
     "togeojson": "^0.16.0",
     "xmldom": "^0.1.27"
   }
