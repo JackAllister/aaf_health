@@ -27,7 +27,7 @@ module.exports.addActivity = function(req, res) {
     if (!req.body.title || !req.body.tripdata) {
       res.status(400);
       res.json({"message": "All fields required."});
-      return;
+      return false;
     }
 
     /* Parse our GPX file and turn to geoJSON */
@@ -45,6 +45,7 @@ module.exports.addActivity = function(req, res) {
 
     res.status(200);
     res.json({"message": "Activity added."});
+    return true;
   }
 };
 
@@ -61,7 +62,7 @@ module.exports.toggleShareActivity = function(req, res) {
     if (!req.body.id) {
       res.status(400);
       res.json({"message": "Activity ID required."});
-      return;
+      return false;
     }
 
     Activity.findById(req.body.id).exec(function(err, activity) {
@@ -75,6 +76,7 @@ module.exports.toggleShareActivity = function(req, res) {
             activity.save();
             res.status(200);
             res.json({"message": "Activity updated."});
+            return true;
           } else {
             /* Indicate error updating activity */
             res.status(400);
@@ -107,7 +109,7 @@ module.exports.updateActivity = function(req, res) {
     if (!req.body.title || !req.body.id) {
       res.status(400);
       res.json({"message": "All fields required."});
-      return;
+      return false;
     }
 
     /* Update activity in database */
@@ -122,6 +124,7 @@ module.exports.updateActivity = function(req, res) {
             activity.save();
             res.status(200);
             res.json({"message": "Activity updated."});
+            return true;
           } else {
             /* Indicate error updating activity */
             res.status(400);
@@ -152,7 +155,7 @@ module.exports.removeActivity = function(req, res) {
     if (!req.body.id) {
       res.status(400);
       res.json({"message": "All fields required."});
-      return;
+      return false;
     }
 
     /* Delete activity from database */
@@ -162,6 +165,7 @@ module.exports.removeActivity = function(req, res) {
           activity.remove();
           res.status(200);
           res.json({"message": "Activity deleted."});
+          return true;
         } else {
           res.status(400);
           res.json({"message": "Cannot delete other users activity."});
@@ -255,9 +259,9 @@ module.exports.view = function(req, res) {
 
         res.status(200);
         res.json(result);
+        return true;
       });
 
-      return true;
   } else {
     return false;
   }

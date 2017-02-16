@@ -7,9 +7,37 @@ var should = chai.should();
 require('../models/db');
 var activity = rewire("../controllers/activity");
 
+/* Dummy variables */
+var dummyID = 'FAKEJWTID';
+
+/* Dummy functions to spoof procedures such as res.status */
+var dummyFunction = function() {
+
+}
 
 /* Unit tests for activity controller */
 describe("Activity Controller", function() {
+  describe("Activity Adder", function() {
+
+    it("Attemping to add activity with no info", function() {
+      var req = {
+        auth: {
+          _id: dummyID
+        },
+        body: {
+
+        }
+      };
+      var res = {
+        status: dummyFunction,
+        json: dummyFunction
+      };
+
+      expect(activity.addActivity(req, res)).to.be.false;
+    });
+
+  });
+
   describe("Activity Viewer", function() {
 
     /* Test to check if no authID view returns false */
@@ -29,7 +57,7 @@ describe("Activity Controller", function() {
       var req = {
         auth: {
           /* Dummy token */
-          _id: 'dija82hu2ua2fh2ua2fa2'
+          _id: dummyID
         },
         query: {
 
@@ -37,7 +65,7 @@ describe("Activity Controller", function() {
       };
       var res = {};
 
-      expect(activity.view(req, res)).to.be.true;
+      expect(activity.view(req, res)).to.not.be.false;
     });
 
 
@@ -60,7 +88,7 @@ describe("Activity Controller", function() {
     it("Search Parser with only userID specified", function() {
       var req = {
           auth: {
-            _id: 'MYDUMMYAUTHTOKEN'
+            _id: dummyID
           },
           query: {
             userID: 'me'
@@ -70,7 +98,7 @@ describe("Activity Controller", function() {
       var privParseSearchTerms = activity.__get__('parseSearchTerms');
 
       /* We should only get a search query for just postedBy */
-      var expected = {postedBy: req.auth._id};
+      var expected = {postedBy: dummyID};
 
       expect(privParseSearchTerms(req)).to.eql(expected);
     });
