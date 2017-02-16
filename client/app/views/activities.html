@@ -21,8 +21,9 @@
   	<div class="row">
       <div class="card col-sm-12 text-center activity" ng-repeat="act in activities.myActivities">
         <div class="card-block">
-          <h4 class="card-title">{{act.title}}</h4>
-          <img class="card-img-top" src="images/yeoman.png" alt="Card image cap">
+          <h4 class="card-title">
+            {{act.title}}
+          </h4>
 
           <div ng-controller="MapCtrl as childCtrl" ng-init="childCtrl.init(act.tripData)">
             <leaflet lf-center="center" geojson="geojson" defaults="defaults" width="100%" height="480px"></leaflet>
