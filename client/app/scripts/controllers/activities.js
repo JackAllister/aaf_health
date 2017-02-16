@@ -18,7 +18,93 @@ angular.module('clientApp')
     ];
     var vm = this;
     this.message = '';
-    this.myActivities = [];
+    vm.myActivities = [];
+
+    /* Function for making sure only unique ID's are kept in array */
+    Array.prototype.removeDuplicates = function () {
+      var newActivities = [];
+
+      /* Iterate through existing array */
+      for (var i = 0 ; i < this.length ; i++) {
+          var found = false;
+
+          /* Iterate through new array */
+          for (var j = 0; j < newActivities.length; j++) {
+            if (newActivities[j].actID === this[i].actID) {
+              found = true;
+            }
+          }
+
+          if (!found) {
+            newActivities.push(this[i]);
+          }
+      }
+      return newActivities;
+     };
+
+    function loadActivities(searchTerm, appendExisting) {
+      /* Call to get all activities for user */
+      activitiesService.getActivities(searchTerm, function(result, data) {
+        /* Callback function for filling in activities */
+        if (result) {
+          /* Iterate through each activity in array */
+          data.forEach(function(activity) {
+
+              /* Fill in names of posters for activities */
+              getNameFromPostedBy(activity);
+
+              /* Get comments for activity */
+              commentService.getActComments(activity.actID, function(result, data) {
+
+                /* Check result to see if successful */
+                if (result) {
+                  activity.comments = data;
+
+                  /* Get poster info for each comment */
+                  activity.comments.forEach(function(comment) {
+                    getNameFromPostedBy(comment);
+                  });
+                } else {
+                  activity.comments = [];
+
+                  /* Alert user there was failure to get comments */
+                  if (data) {
+                    vm.message = data;
+                  } else {
+                    vm.message = 'Error getting activity comments';
+                  }
+                }
+
+              });
+
+          });
+
+          /* Print activity data to screen */
+          if (appendExisting) {
+            if (vm.myActivities.length !== 0) {
+              /* Concat previous activities */
+              vm.myActivities = vm.myActivities.concat(data);
+
+              /* Remove duplicates */
+              vm.myActivities = vm.myActivities.removeDuplicates();
+
+            } else {
+              vm.myActivities = data;
+            }
+          } else {
+            vm.myActivities = data;
+          }
+
+        } else {
+          /* If response failed to get activities */
+          if (data) {
+            vm.message = data;
+          } else {
+            vm.message = 'Error getting user activities.';
+          }
+        }
+      });
+    }
 
     /* Returns the name of the poster from the activity */
     function getNameFromPostedBy(item) {
@@ -61,7 +147,7 @@ angular.module('clientApp')
           vm.message = data;
         }
       });
-    }
+    };
 
     /* Deletes activity and reloads current view */
     this.deleteActivity = function(actID) {
@@ -90,58 +176,17 @@ angular.module('clientApp')
       });
     };
 
+    /*
+     * Need to load all activities that the user can currently
+     * view. It will not show unshared activities of other users.
+     *
+     * Search terms can be implemented via something like below:
+     * loadActivities({userID: 'me'}, false);
+     */
 
-    /* Call to get all activities for user */
-    activitiesService.getActivities({'userID': 'me'}, function(result, data) {
-      /* Callback function for filling in activities */
-      if (result) {
-        /* Print activity data to screen */
-        vm.myActivities = data;
+    /* Load users own activities */
+    loadActivities({userID: 'me'}, false);
 
-        /* Iterate through each activity in array */
-        vm.myActivities.forEach(function(activity) {
-
-            /* Fill in names of posters for activities */
-            getNameFromPostedBy(activity);
-
-            /* Get comments for activity */
-            commentService.getActComments(activity.actID, function(result, data) {
-
-              /* Check result to see if successful */
-              if (result) {
-                activity.comments = data;
-
-                /* Get poster info for each comment */
-                activity.comments.forEach(function(comment) {
-                  getNameFromPostedBy(comment);
-                });
-              } else {
-                activity.comments = [];
-
-                /* Alert user there was failure to get comments */
-                if (data) {
-                  vm.message = data;
-                } else {
-                  vm.message = 'Error getting activity comments';
-                }
-              }
-
-            });
-
-        });
-
-        //TODO: Remove as is just for debug
-        //console.log(vm.myActivities);
-
-      } else {
-        /* If response failed to get activities */
-        if (data) {
-          vm.message = data;
-        } else {
-          vm.message = 'Error getting user activities.';
-        }
-      }
-    });
-
-
+    /* Load all shared and append */
+    loadActivities({shared: true}, true);
   });

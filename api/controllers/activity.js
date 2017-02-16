@@ -162,41 +162,60 @@ module.exports.removeActivity = function(req, res) {
   }
 };
 
+function parseSearchTerms(req) {
+
+  var searchQuery = {};
+
+  /* Check to see if searching with userID */
+  if (req.query.userID) {
+    if (req.query.userID == 'me' || req.query.userID == req.auth._id) {
+      /* If searching for own activities */
+      searchQuery.postedBy = req.auth._id;
+
+    } else {
+      searchQuery.postedBy = new RegExp('^' + req.query.userID, 'i');
+
+      /* If not viewing own activities limit to shared  */
+      searchQuery.shared = true;
+    }
+  } else {
+    /* Only show shared as no userID was provided */
+    searchQuery.shared = true;
+  }
+
+  /* Check to see if searching with actID */
+  if (req.query.actID) {
+    searchQuery._id = req.query.actID;
+  }
+
+  /* Check to see if searching with title */
+  if (req.query.title) {
+    searchQuery.title = new RegExp('^' + req.query.title, 'i');
+  }
+
+  /* Check to see if searching with time */
+  if (req.query.time) {
+    searchQuery.time = new RegExp('^' + req.query.time, 'i');
+  }
+
+  /* Check to see if only shared */
+  if (req.query.shared) {
+    searchQuery.shared = true;
+  }
+
+  return searchQuery;
+}
+
 /* Lists all activities */
 module.exports.view = function(req, res) {
 
   /* Check to make sure authorized */
   if (req.auth._id) {
 
-    var searchQuery = {};
+    var searchQuery = parseSearchTerms(req);
 
-    /* Check to see if searching with userID */
-    if (req.query.userID) {
-      if (req.query.userID == 'me' || req.query.userID == req.auth._id) {
-        /* If searching for own activities */
-        searchQuery.postedBy = req.auth._id;
-      } else {
-        searchQuery.postedBy = new RegExp('^' + req.query.userID, 'i');
-
-        /* If not viewing own activities limit to shared  */
-        searchQuery.shared = true;
-      }
-    }
-
-    /* Check to see if searching with actID */
-    if (req.query.actID) {
-      searchQuery._id = req.query.actID;
-    }
-
-    /* Check to see if searching with title */
-    if (req.query.title) {
-      searchQuery.title = new RegExp('^' + req.query.title, 'i');
-    }
-
-    /* Check to see if searching with time */
-    if (req.query.time) {
-      searchQuery.time = new RegExp('^' + req.query.time, 'i');
-    }
+    console.log("Viewed activites with params: ");
+    console.log(searchQuery);
 
     /* Find matching activities using search procedure */
     Activity.find(searchQuery)

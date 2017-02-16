@@ -1,6 +1,6 @@
 <p>
   <div class="page-head">
-    <h1 class="text-center">My Activities</h1>
+    <h1>Activities</h1>
     <button ng-click="activities.addActivity()" class="btn btn-md btn-primary pull-center">
       <span class="glyphicon glyphicon-upload"></span>
       Add Activity
@@ -21,7 +21,7 @@
           </h6>
           <button ng-click="activities.shareActivity(act.actID)" ng-hide="act.shared" class="btn btn-xs btn-success pull-center">
             <span class="glyphicon glyphicon-share"></span>
-            Share
+            Make Public
           </button>
           <button ng-click="activities.shareActivity(act.actID)" ng-show="act.shared" class="btn btn-xs btn-success pull-center">
             <span class="glyphicon glyphicon-share"></span>
