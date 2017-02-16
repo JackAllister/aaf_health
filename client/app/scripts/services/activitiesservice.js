@@ -83,11 +83,11 @@ angular.module('clientApp')
       },
 
       /* Function to update an activity */
-      updateActivity: function(actID, title, tripData, callback) {
+      updateActivity: function(actID, title, callback) {
         $http({
           method: 'POST',
           url: apiURL + '/activity/update',
-          data: {id: actID, 'title': title, 'tripdata': tripData}
+          data: {id: actID, 'title': title}
         }).then(function(response) {
           /* Success */
           if (response.data && response.data.message) {

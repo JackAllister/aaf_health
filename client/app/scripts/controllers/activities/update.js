@@ -18,7 +18,7 @@ angular.module('clientApp')
     var actID = $location.search().actID;
 
     this.update = function() {
-      if (!vm.title || !vm.tripData) {
+      if (!vm.title) {
         vm.message = "All data needs to be filled in.";
         return;
       }
@@ -27,7 +27,7 @@ angular.module('clientApp')
       vm.message = 'Updating activity';
 
       /* Update current activity */
-      activitiesService.updateActivity(actID, vm.title, vm.tripData,
+      activitiesService.updateActivity(actID, vm.title,
         function(result, data) {
           vm.message = data;
         });
@@ -40,7 +40,6 @@ angular.module('clientApp')
 
         if (data.length == 1) {
           vm.title = data[0].title;
-          vm.tripData = data[0].tripData;
         } else if (data.length == 0 ) {
           vm.message = 'Invalid activity ID.';
         } else {
