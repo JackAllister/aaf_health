@@ -1,11 +1,11 @@
 var rewire = require('rewire');
 
-var chai = require("chai");
+var chai = require('chai');
 var expect = chai.expect;
 var should = chai.should();
 
 require('../models/db');
-var activity = rewire("../controllers/activity");
+var activity = rewire('../controllers/activity');
 
 /* Dummy variables */
 var dummyID = 'FAKEJWTID';
@@ -19,6 +19,7 @@ var dummyFunction = function() {
 describe("Activity Controller", function() {
   describe("Activity Adder", function() {
 
+    /* Unit test to see if able to add activity with no info */
     it("Attemping to add activity with no info", function() {
       var req = {
         auth: {
