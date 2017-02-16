@@ -1,0 +1,14 @@
+<div class="page-head">
+  <h1>Login</h1>
+</div>
+
+<h4 class="text-center">{{login.message}}</h4>
+
+<div class="jumbotron">
+  <h4>Email Address</h4>
+  <input type="text" ng-model="login.email" placeholder="email"><br>
+  <h4>Password</h4>
+  <input type="password" ng-model="login.password" placeholder="password"><br>
+  <br>
+  <button ng-click="login.login()" class="btn btn-md btn-primary pull-center" autofocus>Login</button>
+</div>
