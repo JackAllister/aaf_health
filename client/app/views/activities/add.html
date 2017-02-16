@@ -5,7 +5,9 @@
   <input type="text" ng-model="activitiesAdd.title" placeholder="Title" autofocus><br>
 
   Trip data<br>
-  <input type="text" ng-model="activitiesAdd.tripData" placeholder="Trip data"><br>
-  <br>
+  <label class="btn btn-default btn-file">
+    Browse <input type="file" id="tripFile" style="display: none;">
+  </label>
+  <br><br>
   <button ng-click="activitiesAdd.add()" class="btn btn-md btn-primary pull-center">Add Activity</button>
 </div>
