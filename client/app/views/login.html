@@ -1,10 +1,14 @@
-<p>
-  User login.<br>
-  {{login.message}}<br>
+<div class="page-head">
+  <h1>Login</h1>
+</div>
+
+<h4 class="text-center">{{login.message}}</h4>
+
+<div class="jumbotron">
+  <h4>Email Address</h4>
   <input type="text" ng-model="login.email" placeholder="email"><br>
+  <h4>Password</h4>
   <input type="password" ng-model="login.password" placeholder="password"><br>
-  <button ng-click="login.login()" autofocus>Login</button>
   <br>
-
-
-</p>
+  <button ng-click="login.login()" class="btn btn-md btn-primary pull-center" autofocus>Login</button>
+</div>

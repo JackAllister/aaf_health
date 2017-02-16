@@ -1,7 +1,11 @@
-<div class="dialog">
-  Update Activity.<br>
-  {{activitiesUpdate.message}}<br>
-  Title<br>
+<div class="page-head">
+  <h1>Update Activity</h1>
+</div>
+
+<h4 class="text-center">{{activitiesUpdate.message}}</h4>
+
+<div class="jumbotron">
+  <h4>Title</h4>
   <input type="text" ng-model="activitiesUpdate.title" placeholder="Title" autofocus><br>
   <br>
   <button ng-click="activitiesUpdate.update()" class="btn btn-md btn-primary pull-center">Update Activity</button>

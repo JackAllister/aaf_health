@@ -1,10 +1,14 @@
-<div class="dialog">
-  New Activity.<br>
-  {{activitiesAdd.message}}<br>
-  Title<br>
+<div class="page-head">
+  <h1>New Activity</h1>
+</div>
+
+<h4 class="text-center">{{activitiesAdd.message}}</h4>
+
+<div class="jumbotron">
+  <h4>Title</h4>
   <input type="text" ng-model="activitiesAdd.title" placeholder="Title" autofocus><br>
 
-  Trip data<br>
+  <h4>Trip data</h4>
   <label class="btn btn-default btn-file">
     Browse <input type="file" id="tripFile" style="display: none;">
   </label>
