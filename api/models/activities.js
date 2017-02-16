@@ -11,10 +11,16 @@ var activitySchema = new mongoose.Schema({
     unique: false,
     required: true
   },
-  tripData: {
+  routeName: {
     type: String,
     unique: false,
-    required: true
+    required: false
+  },
+  routeLoc: {
+    type: Object,
+    index: '2dsphere',
+    unique: false,
+    required: false
   },
   shared: {
     type: Boolean,
@@ -26,6 +32,29 @@ var activitySchema = new mongoose.Schema({
     ref: 'User',
     required: true
   }
+});
+
+activitySchema.virtual("geoJSON").get(function() {
+  var feature = {
+    type: "Feature",
+    geometry: this.routeLoc,
+    properties: {
+      name: this.routeName
+    }
+  };
+
+  var resp = {
+    type: "FeatureCollection",
+    features: [feature]
+  };
+  return resp;
+});
+
+activitySchema.virtual("geoJSON").set(function(json) {
+  var feature = json.features[0];
+  this.routeName = feature.properties.name;
+
+  return this.routeLoc = feature.geometry;
 });
 
 module.exports = mongoose.model('Activity', activitySchema);

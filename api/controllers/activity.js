@@ -1,7 +1,18 @@
 var mongoose = require('mongoose');
 
+var togeojson = require('togeojson');
+var DOMParser = require('xmldom').DOMParser;
+
 var Activity = mongoose.model('Activity');
 var User = mongoose.model('User');
+
+function parseGPXFile(gpxData) {
+
+  var gpxDOM = new DOMParser().parseFromString(gpxData);
+  var converted = togeojson.gpx(gpxDOM);
+
+  return converted;
+}
 
 /* Add a new activity */
 module.exports.addActivity = function(req, res) {
@@ -11,7 +22,6 @@ module.exports.addActivity = function(req, res) {
     console.log("Adding activity");
     console.log("UserID: " + req.auth._id);
     console.log("Title: " + req.body.title);
-    console.log("Data: " + req.body.tripdata);
 
     /* Check to make sure all data filled in */
     if (!req.body.title || !req.body.tripdata) {
@@ -20,10 +30,14 @@ module.exports.addActivity = function(req, res) {
       return;
     }
 
+    /* Parse our GPX file and turn to geoJSON */
+    var jsonData = parseGPXFile(req.body.tripdata);
+
     var activity = new Activity();
+
     /* Fill in data and save new activity */
     activity.title = req.body.title;
-    activity.tripData = req.body.tripdata;
+    activity.geoJSON = jsonData;
     activity.time = new Date();
     activity.shared = false;
     activity.postedBy = req.auth._id;
