@@ -256,5 +256,9 @@ module.exports.view = function(req, res) {
         res.status(200);
         res.json(result);
       });
+
+      return true;
+  } else {
+    return false;
   }
 };
