@@ -57,5 +57,23 @@ describe("Activity Controller", function() {
       expect(privParseSearchTerms(req)).to.eql(expected);
     });
 
+    it("Search Parser with only userID specified", function() {
+      var req = {
+          auth: {
+            _id: 'MYDUMMYAUTHTOKEN'
+          },
+          query: {
+            userID: 'me'
+          }
+      };
+
+      var privParseSearchTerms = activity.__get__('parseSearchTerms');
+
+      /* We should only get a search query for just postedBy */
+      var expected = {postedBy: req.auth._id};
+
+      expect(privParseSearchTerms(req)).to.eql(expected);
+    });
+
   });
 });
